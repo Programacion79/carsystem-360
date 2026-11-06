@@ -56,6 +56,12 @@ async def get_index():
     with open(index_path, "r", encoding="utf-8") as f:
         return f.read()
 
+@app.get("/etiquetas", response_class=HTMLResponse)
+async def get_etiquetas():
+    lbl_path = os.path.join(BASE_DIR, "Etiquetas_Repuestos_Carsystem.html")
+    with open(lbl_path, "r", encoding="utf-8") as f:
+        return f.read()
+
 @app.get("/api/catalog")
 def get_catalog(q: Optional[str] = None, categoria: Optional[str] = None):
     prod = DB["productos"].copy()
@@ -90,6 +96,32 @@ def sync_inventory_all():
     DB["inventario"]["diferencia"] = 0
     DB["inventario"]["ultima_actualizacion_hoja"] = "2026-11-05 (Sincronizado WMS 360)"
     return {"status": "ok", "message": "Inventario físico y lógico sincronizado exitosamente al 100%."}
+
+@app.post("/api/inventory/scan")
+def scan_inventory_item(sku: str):
+    idx = DB["inventario"].index[DB["inventario"]["sku"] == sku.upper()].tolist()
+    if not idx:
+        raise HTTPException(status_code=404, detail="SKU no encontrado")
+    
+    i = idx[0]
+    stock_fisico_actual = int(DB["inventario"].at[i, "stock_fisico"]) + 1
+    DB["inventario"].at[i, "stock_fisico"] = stock_fisico_actual
+    
+    stock_reg = int(DB["inventario"].at[i, "stock_registrado"])
+    DB["inventario"].at[i, "diferencia"] = stock_fisico_actual - stock_reg
+    
+    prod_name = DB["inventario"].at[i, "producto"]
+    ubicacion = DB["inventario"].at[i, "ubicacion"]
+    
+    return {
+        "status": "ok",
+        "sku": sku.upper(),
+        "producto": prod_name,
+        "ubicacion": ubicacion,
+        "stock_fisico": stock_fisico_actual,
+        "diferencia": int(DB["inventario"].at[i, "diferencia"]),
+        "message": f"Pistoleado {sku.upper()}: Conteo físico actualizado a {stock_fisico_actual} unidades."
+    }
 
 @app.post("/api/chat")
 def chat_ai(payload: ChatMessage):

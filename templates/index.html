@@ -220,13 +220,85 @@
             Control y Saneamiento de Inventario (WMS 360°)
           </h3>
           <p class="text-xs sm:text-sm text-slate-500 mt-0.5">
-            Corrige en vivo los descuadres físicos detectados en el diagnóstico.
+            Saneamiento en tiempo real con soporte para lectores y pistolas de códigos de barras.
           </p>
         </div>
-        <button onclick="syncInventoryAll()" class="bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 sm:py-2.5 rounded-xl font-bold text-xs sm:text-sm shadow-md transition flex items-center justify-center gap-2">
-          <i data-lucide="refresh-cw" class="w-3.5 h-3.5 sm:w-4 sm:h-4"></i>
-          Sincronizar Bodega WMS
-        </button>
+        <div class="flex items-center gap-2 flex-wrap">
+          <a href="/etiquetas" target="_blank" class="bg-slate-900 hover:bg-slate-800 text-white px-3.5 py-2 rounded-xl font-bold text-xs shadow-sm transition flex items-center gap-1.5">
+            <i data-lucide="tag" class="w-3.5 h-3.5 text-cyan-400"></i>
+            <span>Ver / Imprimir Etiquetas</span>
+          </a>
+          <button onclick="syncInventoryAll()" class="bg-amber-600 hover:bg-amber-500 text-white px-3.5 py-2 rounded-xl font-bold text-xs shadow-sm transition flex items-center gap-1.5">
+            <i data-lucide="refresh-cw" class="w-3.5 h-3.5"></i>
+            <span>Sincronizar WMS</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- MÓDULO INTERACTIVO DE PISTOLEO -->
+      <div class="bg-gradient-to-r from-slate-900 via-slate-950 to-slate-900 text-white p-4 sm:p-5 rounded-2xl border border-slate-800 shadow-md">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-3 mb-3 pb-3 border-b border-slate-800">
+          <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center font-bold">
+              🔫
+            </div>
+            <div>
+              <h4 class="text-xs sm:text-sm font-bold text-white flex items-center gap-1.5">
+                Simulador de Pistola Láser / Lector de Código de Barras
+                <span class="text-[9px] bg-cyan-500/20 text-cyan-300 px-2 py-0.5 rounded-full border border-cyan-500/30">Sonido Beep Activo</span>
+              </h4>
+              <p class="text-[11px] text-slate-400">Escanea o haz clic para simular el pistoleo físico y aumentar el conteo en bodega.</p>
+            </div>
+          </div>
+
+          <!-- Input para pistolas lectoras físicas reales USB/Bluetooth -->
+          <div class="flex items-center gap-2 w-full md:w-auto">
+            <input type="text" id="scanner-input" placeholder="Pistolear aquí (o escribe SKU)..." 
+              class="w-full md:w-56 bg-slate-800/90 text-white text-xs px-3 py-2 rounded-xl border border-slate-700 outline-none focus:border-cyan-400 font-mono"
+              onkeypress="handleManualScan(event)">
+            <button onclick="triggerScanInput()" class="bg-cyan-600 hover:bg-cyan-500 text-slate-950 px-3 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1 flex-shrink-0">
+              <i data-lucide="scan-barcode" class="w-4 h-4"></i>
+              <span>Pistolear</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Botones de pistoleo rápido de los 12 SKUs -->
+        <div>
+          <span class="text-[10px] uppercase font-bold text-slate-400 tracking-wider block mb-2">Pistolear repuestos con 1 clic (Simulación rápida para jurados):</span>
+          <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-6 gap-2">
+            <button onclick="scanSKU('MO-201')" class="p-2 bg-slate-800/80 hover:bg-cyan-950 hover:border-cyan-500/50 border border-slate-700/80 rounded-xl text-left transition flex flex-col">
+              <span class="text-[11px] font-mono font-bold text-cyan-300">MO-201</span>
+              <span class="text-[10px] text-slate-300 truncate">Filtro Aceite</span>
+              <span class="text-[9px] text-rose-400 font-semibold mt-0.5">Descuadre -47</span>
+            </button>
+            <button onclick="scanSKU('FI-601')" class="p-2 bg-slate-800/80 hover:bg-cyan-950 hover:border-cyan-500/50 border border-slate-700/80 rounded-xl text-left transition flex flex-col">
+              <span class="text-[11px] font-mono font-bold text-cyan-300">FI-601</span>
+              <span class="text-[10px] text-slate-300 truncate">Filtro Aire</span>
+              <span class="text-[9px] text-rose-400 font-semibold mt-0.5">Descuadre -30</span>
+            </button>
+            <button onclick="scanSKU('RE-502')" class="p-2 bg-slate-800/80 hover:bg-cyan-950 hover:border-cyan-500/50 border border-slate-700/80 rounded-xl text-left transition flex flex-col">
+              <span class="text-[11px] font-mono font-bold text-cyan-300">RE-502</span>
+              <span class="text-[10px] text-slate-300 truncate">Termostato</span>
+              <span class="text-[9px] text-rose-400 font-semibold mt-0.5">Descuadre -22</span>
+            </button>
+            <button onclick="scanSKU('FR-101')" class="p-2 bg-slate-800/80 hover:bg-cyan-950 hover:border-cyan-500/50 border border-slate-700/80 rounded-xl text-left transition flex flex-col">
+              <span class="text-[11px] font-mono font-bold text-cyan-300">FR-101</span>
+              <span class="text-[10px] text-slate-300 truncate">Pastillas Freno</span>
+              <span class="text-[9px] text-rose-400 font-semibold mt-0.5">Descuadre -16</span>
+            </button>
+            <button onclick="scanSKU('SU-301')" class="p-2 bg-slate-800/80 hover:bg-cyan-950 hover:border-cyan-500/50 border border-slate-700/80 rounded-xl text-left transition flex flex-col">
+              <span class="text-[11px] font-mono font-bold text-cyan-300">SU-301</span>
+              <span class="text-[10px] text-slate-300 truncate">Amortiguador</span>
+              <span class="text-[9px] text-rose-400 font-semibold mt-0.5">Descuadre -8</span>
+            </button>
+            <button onclick="scanSKU('EL-401')" class="p-2 bg-slate-800/80 hover:bg-cyan-950 hover:border-cyan-500/50 border border-slate-700/80 rounded-xl text-left transition flex flex-col">
+              <span class="text-[11px] font-mono font-bold text-cyan-300">EL-401</span>
+              <span class="text-[10px] text-slate-300 truncate">Batería 12V</span>
+              <span class="text-[9px] text-rose-400 font-semibold mt-0.5">Descuadre -2</span>
+            </button>
+          </div>
+        </div>
       </div>
 
       <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
@@ -577,6 +649,74 @@
       } catch (err) {
         typing.innerText = "Error de conexión con el bot.";
       }
+    }
+
+    // Audio Beep Generator using Web Audio API (Native browser sound)
+    function playLaserBeep() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'square';
+        osc.frequency.setValueAtTime(1400, audioCtx.currentTime); // High pitch scanner beep
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.12);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.12);
+      } catch (e) {
+        console.log('AudioContext not allowed without gesture');
+      }
+    }
+
+    async function scanSKU(sku) {
+      playLaserBeep();
+      try {
+        const res = await fetch(`/api/inventory/scan?sku=${encodeURIComponent(sku)}`, { method: 'POST' });
+        const data = await res.json();
+        if (res.ok) {
+          showScanToast(`🔫 ¡BEEP! Pistoleado: <strong>${data.sku} - ${data.producto}</strong><br>Stock físico: <strong class="text-emerald-400">${data.stock_fisico}</strong> unds (Ubicación: ${data.ubicacion})`);
+          loadInventory();
+        } else {
+          alert(data.detail || 'Error al pistolear SKU');
+        }
+      } catch (err) {
+        alert('Error de conexión con el scanner');
+      }
+    }
+
+    function handleManualScan(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        triggerScanInput();
+      }
+    }
+
+    function triggerScanInput() {
+      const input = document.getElementById('scanner-input');
+      const sku = input.value.trim().toUpperCase();
+      if (!sku) return;
+      input.value = '';
+      scanSKU(sku);
+    }
+
+    function showScanToast(html) {
+      let toast = document.getElementById('scan-toast');
+      if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'scan-toast';
+        toast.className = 'fixed bottom-5 right-5 z-50 bg-slate-900 border border-cyan-500 text-white px-4 py-3 rounded-2xl shadow-2xl text-xs max-w-sm transition-all duration-300';
+        document.body.appendChild(toast);
+      }
+      toast.innerHTML = html;
+      toast.style.display = 'block';
+      toast.style.opacity = '1';
+      clearTimeout(window._toastTimeout);
+      window._toastTimeout = setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => toast.style.display = 'none', 300);
+      }, 3500);
     }
 
     // Load Inventory
