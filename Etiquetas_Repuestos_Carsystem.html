@@ -2,27 +2,36 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>Etiquetas de Código de Barras - Carsystem Bodega</title>
+  <title>Etiquetas Oficiales de Código de Barras - Carsystem Bodega</title>
+  <!-- JsBarcode para generar códigos de barra CODE-128 reales y escaneables -->
+  <script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
   <style>
     @page {
       size: A4 portrait;
-      margin: 10mm;
+      margin: 6mm;
     }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { 
+      box-sizing: border-box; 
+      margin: 0; 
+      padding: 0;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+      color-adjust: exact !important;
+    }
     body {
       font-family: 'Segoe UI', Arial, sans-serif;
       background: #f1f5f9;
-      padding: 20px;
+      padding: 10px;
     }
     .print-btn-bar {
       max-width: 900px;
-      margin: 0 auto 20px auto;
+      margin: 0 auto 10px auto;
       display: flex;
       justify-content: space-between;
       align-items: center;
       background: #0f172a;
       color: white;
-      padding: 12px 20px;
+      padding: 10px 18px;
       border-radius: 8px;
     }
     .print-btn {
@@ -30,7 +39,8 @@
       color: #0f172a;
       border: none;
       padding: 8px 18px;
-      font-weight: bold;
+      font-weight: 800;
+      font-size: 12px;
       border-radius: 6px;
       cursor: pointer;
     }
@@ -38,107 +48,89 @@
       max-width: 900px;
       margin: 0 auto;
       background: white;
-      padding: 15px;
+      padding: 8px;
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
+      grid-template-rows: repeat(6, 1fr);
+      gap: 6px;
       border: 1px solid #cbd5e1;
     }
     .label-card {
-      border: 2px dashed #94a3b8;
+      border: 1.5px solid #0f172a;
       border-radius: 6px;
-      padding: 10px 14px;
+      padding: 6px 10px;
       background: #ffffff;
-      position: relative;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
-      height: 175px;
+      height: 152px;
+      position: relative;
     }
     .label-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 2px solid #0f172a;
-      padding-bottom: 4px;
-      margin-bottom: 6px;
+      border-bottom: 1.5px solid #0f172a;
+      padding-bottom: 2px;
+      margin-bottom: 3px;
     }
     .brand-title {
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 800;
       color: #0f172a;
       letter-spacing: 0.5px;
     }
     .location-badge {
-      background: #0f172a;
-      color: white;
-      font-size: 10px;
+      background: #0f172a !important;
+      color: #ffffff !important;
+      font-size: 9px;
       font-weight: bold;
-      padding: 2px 6px;
+      padding: 1px 6px;
       border-radius: 3px;
     }
     .prod-name {
-      font-size: 13px;
+      font-size: 11.5px;
       font-weight: 800;
-      color: #1e293b;
-      line-height: 1.2;
-      margin-bottom: 3px;
+      color: #0f172a;
+      line-height: 1.15;
     }
     .prod-details {
-      font-size: 9.5px;
-      color: #64748b;
-      line-height: 1.3;
+      font-size: 8.5px;
+      color: #475569;
+      line-height: 1.15;
+      margin-top: 1px;
     }
     .barcode-area {
       display: flex;
-      align-items: center;
+      align-items: flex-end;
       justify-content: space-between;
-      margin-top: 6px;
-      border-top: 1px solid #e2e8f0;
-      padding-top: 6px;
-    }
-    .barcode-lines {
-      height: 38px;
-      width: 170px;
-      background: repeating-linear-gradient(
-        90deg,
-        #000 0px, #000 2px,
-        #fff 2px, #fff 4px,
-        #000 4px, #000 5px,
-        #fff 5px, #fff 7px,
-        #000 7px, #000 10px,
-        #fff 10px, #fff 11px,
-        #000 11px, #000 14px,
-        #fff 14px, #fff 16px
-      );
-    }
-    .barcode-text {
-      font-family: 'Courier New', monospace;
-      font-size: 12px;
-      font-weight: bold;
-      letter-spacing: 2px;
-      color: #0f172a;
-      text-align: center;
+      border-top: 1px solid #cbd5e1;
+      padding-top: 2px;
       margin-top: 2px;
+    }
+    .barcode-svg {
+      max-width: 175px;
+      height: 48px;
     }
     .price-tag {
       text-align: right;
     }
     .price-val {
-      font-size: 14px;
+      font-size: 13px;
       font-weight: 800;
       color: #0f172a;
     }
     .price-lbl {
-      font-size: 8px;
-      color: #94a3b8;
+      font-size: 7.5px;
+      color: #64748b;
       text-transform: uppercase;
+      font-weight: bold;
     }
     @media print {
       body { background: white; padding: 0; }
       .print-btn-bar { display: none; }
-      .sheet { border: none; padding: 0; gap: 10px; }
-      .label-card { page-break-inside: avoid; }
+      .sheet { border: none; padding: 0; gap: 4px; }
+      .label-card { page-break-inside: avoid; border: 1.5px solid #000; height: 152px; }
     }
   </style>
 </head>
@@ -146,10 +138,10 @@
 
   <div class="print-btn-bar">
     <div>
-      <strong>🏷️ Plantilla de Etiquetas para Pistoleo - Carsystem WMS</strong>
-      <div style="font-size: 11px; color: #94a3b8;">12 Códigos de Barra Oficiales listos para escanear en bodega</div>
+      <strong style="font-size: 14px;">🏷️ Etiquetas Oficiales para Pistoleo - Carsystem WMS (12 Productos)</strong>
+      <div style="font-size: 10px; color: #94a3b8;">Códigos Code-128 reales en formato vectorial SVG (Ajustado exactamente para 1 hoja A4)</div>
     </div>
-    <button class="print-btn" onclick="window.print()">🖨️ Imprimir Etiquetas</button>
+    <button class="print-btn" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
   </div>
 
   <div class="sheet">
@@ -157,23 +149,17 @@
     <!-- 1. FR-101 -->
     <div class="label-card">
       <div class="label-header">
-        <span class="brand-title">CARSYSTEM WMS · ANDINA</span>
+        <span class="brand-title">CARSYSTEM · ANDINA</span>
         <span class="location-badge">ESTANTE A-12</span>
       </div>
       <div>
         <div class="prod-name">Pastillas de freno delanteras</div>
-        <div class="prod-details">
-          Ref: FR-AND-2024 · Garantía: 12 meses<br>
-          Compatibilidad: Renault Logan, Sandero, Duster 1.6/2.0
-        </div>
+        <div class="prod-details">Ref OEM: FR-AND-2024 · Gtía: 12m · Renault Logan, Sandero, Duster 1.6/2.0</div>
       </div>
       <div class="barcode-area">
-        <div>
-          <div class="barcode-lines"></div>
-          <div class="barcode-text">*FR-101*</div>
-        </div>
+        <svg class="barcode-svg" jsbarcode-value="FR-101"></svg>
         <div class="price-tag">
-          <div class="price-lbl">Precio Venta</div>
+          <div class="price-lbl">Precio COP</div>
           <div class="price-val">$138.000</div>
         </div>
       </div>
@@ -182,23 +168,17 @@
     <!-- 2. FR-102 -->
     <div class="label-card">
       <div class="label-header">
-        <span class="brand-title">CARSYSTEM WMS · ANDINA</span>
+        <span class="brand-title">CARSYSTEM · ANDINA</span>
         <span class="location-badge">ESTANTE A-14</span>
       </div>
       <div>
         <div class="prod-name">Disco de freno ventilado</div>
-        <div class="prod-details">
-          Ref: DFR-AND-55 · Garantía: 12 meses<br>
-          Compatibilidad: Renault Logan, Sandero, Stepway
-        </div>
+        <div class="prod-details">Ref OEM: DFR-AND-55 · Gtía: 12m · Renault Logan, Sandero, Stepway</div>
       </div>
       <div class="barcode-area">
-        <div>
-          <div class="barcode-lines"></div>
-          <div class="barcode-text">*FR-102*</div>
-        </div>
+        <svg class="barcode-svg" jsbarcode-value="FR-102"></svg>
         <div class="price-tag">
-          <div class="price-lbl">Precio Venta</div>
+          <div class="price-lbl">Precio COP</div>
           <div class="price-val">$188.000</div>
         </div>
       </div>
@@ -207,23 +187,17 @@
     <!-- 3. MO-201 -->
     <div class="label-card">
       <div class="label-header">
-        <span class="brand-title">CARSYSTEM WMS · MANN-FILTER</span>
+        <span class="brand-title">CARSYSTEM · MANN-FILTER</span>
         <span class="location-badge">ESTANTE B-04</span>
       </div>
       <div>
         <div class="prod-name">Filtro de aceite blindado</div>
-        <div class="prod-details">
-          Ref: W-712-83 · Garantía: 6 meses<br>
-          Compatibilidad: Chevrolet Aveo, Optra, Spark GT
-        </div>
+        <div class="prod-details">Ref OEM: W-712-83 · Gtía: 6m · Chevrolet Aveo, Optra, Spark GT</div>
       </div>
       <div class="barcode-area">
-        <div>
-          <div class="barcode-lines"></div>
-          <div class="barcode-text">*MO-201*</div>
-        </div>
+        <svg class="barcode-svg" jsbarcode-value="MO-201"></svg>
         <div class="price-tag">
-          <div class="price-lbl">Precio Venta</div>
+          <div class="price-lbl">Precio COP</div>
           <div class="price-val">$32.000</div>
         </div>
       </div>
@@ -232,23 +206,17 @@
     <!-- 4. MO-202 -->
     <div class="label-card">
       <div class="label-header">
-        <span class="brand-title">CARSYSTEM WMS · GATES</span>
+        <span class="brand-title">CARSYSTEM · GATES</span>
         <span class="location-badge">ESTANTE B-08</span>
       </div>
       <div>
-        <div class="prod-name">Kit de distribución (Correa+Tensor)</div>
-        <div class="prod-details">
-          Ref: K015631XS · Garantía: 12 meses<br>
-          Compatibilidad: Chevrolet Aveo 1.4/1.6, Cruze 1.8
-        </div>
+        <div class="prod-name">Kit distribución (Correa+Tensor)</div>
+        <div class="prod-details">Ref OEM: K015631XS · Gtía: 12m · Chevrolet Aveo 1.4/1.6, Cruze 1.8</div>
       </div>
       <div class="barcode-area">
-        <div>
-          <div class="barcode-lines"></div>
-          <div class="barcode-text">*MO-202*</div>
-        </div>
+        <svg class="barcode-svg" jsbarcode-value="MO-202"></svg>
         <div class="price-tag">
-          <div class="price-lbl">Precio Venta</div>
+          <div class="price-lbl">Precio COP</div>
           <div class="price-val">$245.000</div>
         </div>
       </div>
@@ -257,23 +225,17 @@
     <!-- 5. SU-301 -->
     <div class="label-card">
       <div class="label-header">
-        <span class="brand-title">CARSYSTEM WMS · MONROE</span>
+        <span class="brand-title">CARSYSTEM · MONROE</span>
         <span class="location-badge">ESTANTE C-01</span>
       </div>
       <div>
         <div class="prod-name">Amortiguador delantero gas</div>
-        <div class="prod-details">
-          Ref: G7329 · Garantía: 24 meses<br>
-          Compatibilidad: Kia Picanto Ion, Morning 1.0/1.25
-        </div>
+        <div class="prod-details">Ref OEM: G7329 · Gtía: 24m · Kia Picanto Ion, Morning 1.0/1.25</div>
       </div>
       <div class="barcode-area">
-        <div>
-          <div class="barcode-lines"></div>
-          <div class="barcode-text">*SU-301*</div>
-        </div>
+        <svg class="barcode-svg" jsbarcode-value="SU-301"></svg>
         <div class="price-tag">
-          <div class="price-lbl">Precio Venta</div>
+          <div class="price-lbl">Precio COP</div>
           <div class="price-val">$185.000</div>
         </div>
       </div>
@@ -282,23 +244,17 @@
     <!-- 6. SU-302 -->
     <div class="label-card">
       <div class="label-header">
-        <span class="brand-title">CARSYSTEM WMS · 555 JAPAN</span>
+        <span class="brand-title">CARSYSTEM · 555 JAPAN</span>
         <span class="location-badge">ESTANTE C-03</span>
       </div>
       <div>
         <div class="prod-name">Rótula de dirección delantera</div>
-        <div class="prod-details">
-          Ref: SB-8082 · Garantía: 12 meses<br>
-          Compatibilidad: Kia Picanto, Hyundai i10
-        </div>
+        <div class="prod-details">Ref OEM: SB-8082 · Gtía: 12m · Kia Picanto, Hyundai i10</div>
       </div>
       <div class="barcode-area">
-        <div>
-          <div class="barcode-lines"></div>
-          <div class="barcode-text">*SU-302*</div>
-        </div>
+        <svg class="barcode-svg" jsbarcode-value="SU-302"></svg>
         <div class="price-tag">
-          <div class="price-lbl">Precio Venta</div>
+          <div class="price-lbl">Precio COP</div>
           <div class="price-val">$98.000</div>
         </div>
       </div>
@@ -307,23 +263,17 @@
     <!-- 7. EL-401 -->
     <div class="label-card">
       <div class="label-header">
-        <span class="brand-title">CARSYSTEM WMS · MAC</span>
+        <span class="brand-title">CARSYSTEM · MAC</span>
         <span class="location-badge">ESTANTE D-02</span>
       </div>
       <div>
         <div class="prod-name">Batería 12V 60Ah Libre Mtto</div>
-        <div class="prod-details">
-          Ref: MAC-GOLD-60 · Garantía: 18 meses<br>
-          Compatibilidad: Universal autos 1.2 a 2.0L
-        </div>
+        <div class="prod-details">Ref OEM: MAC-GOLD-60 · Gtía: 18m · Universal autos 1.2 a 2.0L</div>
       </div>
       <div class="barcode-area">
-        <div>
-          <div class="barcode-lines"></div>
-          <div class="barcode-text">*EL-401*</div>
-        </div>
+        <svg class="barcode-svg" jsbarcode-value="EL-401"></svg>
         <div class="price-tag">
-          <div class="price-lbl">Precio Venta</div>
+          <div class="price-lbl">Precio COP</div>
           <div class="price-val">$420.000</div>
         </div>
       </div>
@@ -332,23 +282,17 @@
     <!-- 8. EL-402 -->
     <div class="label-card">
       <div class="label-header">
-        <span class="brand-title">CARSYSTEM WMS · BOSCH</span>
+        <span class="brand-title">CARSYSTEM · BOSCH</span>
         <span class="location-badge">ESTANTE D-05</span>
       </div>
       <div>
         <div class="prod-name">Alternador 12V 90A</div>
-        <div class="prod-details">
-          Ref: 0124325003 · Garantía: 12 meses<br>
-          Compatibilidad: Mazda 2, Mazda 3 1.6/2.0
-        </div>
+        <div class="prod-details">Ref OEM: 0124325003 · Gtía: 12m · Mazda 2, Mazda 3 1.6/2.0</div>
       </div>
       <div class="barcode-area">
-        <div>
-          <div class="barcode-lines"></div>
-          <div class="barcode-text">*EL-402*</div>
-        </div>
+        <svg class="barcode-svg" jsbarcode-value="EL-402"></svg>
         <div class="price-tag">
-          <div class="price-lbl">Precio Venta</div>
+          <div class="price-lbl">Precio COP</div>
           <div class="price-val">$680.000</div>
         </div>
       </div>
@@ -357,23 +301,17 @@
     <!-- 9. RE-501 -->
     <div class="label-card">
       <div class="label-header">
-        <span class="brand-title">CARSYSTEM WMS · NISSENS</span>
+        <span class="brand-title">CARSYSTEM · NISSENS</span>
         <span class="location-badge">ESTANTE E-01</span>
       </div>
       <div>
         <div class="prod-name">Radiador de refrigeración</div>
-        <div class="prod-details">
-          Ref: 630713 · Garantía: 12 meses<br>
-          Compatibilidad: Chevrolet Tracker, Sonic 1.8
-        </div>
+        <div class="prod-details">Ref OEM: 630713 · Gtía: 12m · Chevrolet Tracker, Sonic 1.8</div>
       </div>
       <div class="barcode-area">
-        <div>
-          <div class="barcode-lines"></div>
-          <div class="barcode-text">*RE-501*</div>
-        </div>
+        <svg class="barcode-svg" jsbarcode-value="RE-501"></svg>
         <div class="price-tag">
-          <div class="price-lbl">Precio Venta</div>
+          <div class="price-lbl">Precio COP</div>
           <div class="price-val">$395.000</div>
         </div>
       </div>
@@ -382,23 +320,17 @@
     <!-- 10. RE-502 -->
     <div class="label-card">
       <div class="label-header">
-        <span class="brand-title">CARSYSTEM WMS · GATES</span>
+        <span class="brand-title">CARSYSTEM · GATES</span>
         <span class="location-badge">ESTANTE E-03</span>
       </div>
       <div>
         <div class="prod-name">Termostato con carcasa 88°C</div>
-        <div class="prod-details">
-          Ref: TH41488G1 · Garantía: 12 meses<br>
-          Compatibilidad: Chevrolet Tracker, Sonic, Cruze 1.8
-        </div>
+        <div class="prod-details">Ref OEM: TH41488G1 · Gtía: 12m · Chevrolet Tracker, Sonic, Cruze 1.8</div>
       </div>
       <div class="barcode-area">
-        <div>
-          <div class="barcode-lines"></div>
-          <div class="barcode-text">*RE-502*</div>
-        </div>
+        <svg class="barcode-svg" jsbarcode-value="RE-502"></svg>
         <div class="price-tag">
-          <div class="price-lbl">Precio Venta</div>
+          <div class="price-lbl">Precio COP</div>
           <div class="price-val">$148.000</div>
         </div>
       </div>
@@ -407,23 +339,17 @@
     <!-- 11. FI-601 -->
     <div class="label-card">
       <div class="label-header">
-        <span class="brand-title">CARSYSTEM WMS · MANN-FILTER</span>
+        <span class="brand-title">CARSYSTEM · MANN-FILTER</span>
         <span class="location-badge">ESTANTE B-10</span>
       </div>
       <div>
         <div class="prod-name">Filtro de aire de motor</div>
-        <div class="prod-details">
-          Ref: C-2672-1 · Garantía: 6 meses<br>
-          Compatibilidad: Renault Sandero, Logan, Duster 1.6
-        </div>
+        <div class="prod-details">Ref OEM: C-2672-1 · Gtía: 6m · Renault Sandero, Logan, Duster 1.6</div>
       </div>
       <div class="barcode-area">
-        <div>
-          <div class="barcode-lines"></div>
-          <div class="barcode-text">*FI-601*</div>
-        </div>
+        <svg class="barcode-svg" jsbarcode-value="FI-601"></svg>
         <div class="price-tag">
-          <div class="price-lbl">Precio Venta</div>
+          <div class="price-lbl">Precio COP</div>
           <div class="price-val">$59.000</div>
         </div>
       </div>
@@ -432,23 +358,17 @@
     <!-- 12. FI-602 -->
     <div class="label-card">
       <div class="label-header">
-        <span class="brand-title">CARSYSTEM WMS · BOSCH</span>
+        <span class="brand-title">CARSYSTEM · BOSCH</span>
         <span class="location-badge">ESTANTE B-12</span>
       </div>
       <div>
-        <div class="prod-name">Filtro de combustible metálico</div>
-        <div class="prod-details">
-          Ref: 0450905316 · Garantía: 6 meses<br>
-          Compatibilidad: Universal inyección electrónica
-        </div>
+        <div class="prod-name">Filtro combustible metálico</div>
+        <div class="prod-details">Ref OEM: 0450905316 · Gtía: 6m · Universal inyección electrónica</div>
       </div>
       <div class="barcode-area">
-        <div>
-          <div class="barcode-lines"></div>
-          <div class="barcode-text">*FI-602*</div>
-        </div>
+        <svg class="barcode-svg" jsbarcode-value="FI-602"></svg>
         <div class="price-tag">
-          <div class="price-lbl">Precio Venta</div>
+          <div class="price-lbl">Precio COP</div>
           <div class="price-val">$45.000</div>
         </div>
       </div>
@@ -456,5 +376,22 @@
 
   </div>
 
+  <script>
+    // Inicializar códigos de barra Code-128 con texto exacto del SKU
+    document.querySelectorAll('.barcode-svg').forEach(el => {
+      const val = el.getAttribute('jsbarcode-value');
+      JsBarcode(el, val, {
+        format: "CODE128",
+        lineColor: "#000000",
+        width: 1.6,
+        height: 34,
+        displayValue: true,
+        text: val,
+        fontSize: 12,
+        font: "monospace",
+        textMargin: 2
+      });
+    });
+  </script>
 </body>
 </html>
