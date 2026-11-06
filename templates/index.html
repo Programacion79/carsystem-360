@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carsystem 360° - Plataforma Digital Integrada de Repuestos</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #f8fafc; }
+    .chat-bubble-user { background: #005c4b; color: white; border-radius: 12px 12px 2px 12px; }
+    .chat-bubble-bot { background: #202c33; color: #e9edef; border-radius: 12px 12px 12px 2px; }
+  </style>
+</head>
+<body class="text-slate-800 antialiased min-h-screen flex flex-col">
+
+  <!-- TOP HEADER -->
+  <header class="bg-slate-900 text-white border-b border-slate-800 sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-16">
+        <!-- Brand -->
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-blue-600 flex items-center justify-center shadow-lg shadow-blue-500/20">
+            <i data-lucide="wrench" class="w-5 h-5 text-white"></i>
+          </div>
+          <div>
+            <div class="flex items-center space-x-2">
+              <span class="text-xl font-extrabold tracking-tight">Carsystem <span class="text-cyan-400">360°</span></span>
+              <span class="bg-cyan-500/10 text-cyan-400 text-xs px-2 py-0.5 rounded-full font-bold border border-cyan-500/20">Prototipo Interdisciplinar</span>
+            </div>
+            <p class="text-xs text-slate-400 hidden sm:block">Alcaldía de Medellín · Sapiencia · Esumer · Reto Estud-IA</p>
+          </div>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <nav class="flex space-x-1 sm:space-x-2">
+          <button onclick="switchTab('catalog')" id="tab-catalog" class="tab-btn px-3 py-2 rounded-lg text-sm font-semibold flex items-center space-x-1.5 transition bg-cyan-600 text-white">
+            <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+            <span class="hidden md:inline">Catálogo & Web</span>
+          </button>
+          <button onclick="switchTab('chat')" id="tab-chat" class="tab-btn px-3 py-2 rounded-lg text-sm font-semibold flex items-center space-x-1.5 transition text-slate-300 hover:bg-slate-800">
+            <i data-lucide="message-square" class="w-4 h-4 text-emerald-400"></i>
+            <span>Simulador IA (WhatsApp)</span>
+          </button>
+          <button onclick="switchTab('inventory')" id="tab-inventory" class="tab-btn px-3 py-2 rounded-lg text-sm font-semibold flex items-center space-x-1.5 transition text-slate-300 hover:bg-slate-800">
+            <i data-lucide="boxes" class="w-4 h-4 text-amber-400"></i>
+            <span class="hidden md:inline">WMS & Bodega</span>
+          </button>
+          <button onclick="switchTab('dashboard')" id="tab-dashboard" class="tab-btn px-3 py-2 rounded-lg text-sm font-semibold flex items-center space-x-1.5 transition text-slate-300 hover:bg-slate-800">
+            <i data-lucide="bar-chart-3" class="w-4 h-4 text-purple-400"></i>
+            <span>Analítica</span>
+          </button>
+          <button onclick="switchTab('legal')" id="tab-legal" class="tab-btn px-3 py-2 rounded-lg text-sm font-semibold flex items-center space-x-1.5 transition text-slate-300 hover:bg-slate-800">
+            <i data-lucide="shield-check" class="w-4 h-4 text-blue-400"></i>
+            <span class="hidden md:inline">Habeas Data</span>
+          </button>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN VIEW CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8">
+
+    <!-- TAB 1: CATALOGO & E-COMMERCE -->
+    <div id="view-catalog" class="space-y-6">
+      <!-- Search & Filters -->
+      <div class="bg-white p-5 rounded-2xl shadow-sm border border-slate-200">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 items-center">
+          <div class="md:col-span-2 relative">
+            <i data-lucide="search" class="w-5 h-5 text-slate-400 absolute left-3.5 top-3"></i>
+            <input type="text" id="catalog-search" oninput="loadCatalog()" placeholder="Buscar por repuesto, SKU o vehículo (ej: Sandero, Aveo, Freno)..." 
+              class="w-full pl-11 pr-4 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:ring-2 focus:ring-cyan-500 focus:bg-white outline-none transition">
+          </div>
+          <div>
+            <select id="catalog-category" onchange="loadCatalog()" class="w-full py-2.5 px-3 bg-slate-50 border border-slate-300 rounded-xl text-sm outline-none focus:ring-2 focus:ring-cyan-500">
+              <option value="Todos">Todas las Categorías</option>
+              <option value="Frenos">Frenos</option>
+              <option value="Motor">Motor</option>
+              <option value="Suspensión">Suspensión</option>
+              <option value="Eléctrico">Eléctrico</option>
+              <option value="Refrigeración">Refrigeración</option>
+              <option value="Filtros">Filtros</option>
+            </select>
+          </div>
+          <div class="text-right">
+            <span id="catalog-count" class="text-xs font-semibold text-slate-500 bg-slate-100 px-3 py-1.5 rounded-lg border border-slate-200">Cargando catálogo...</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div id="products-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- TAB 2: SIMULADOR IA WHATSAPP OMNICANAL -->
+    <div id="view-chat" class="hidden">
+      <div class="max-w-4xl mx-auto bg-slate-900 rounded-2xl shadow-2xl overflow-hidden border border-slate-800 grid grid-cols-1 md:grid-cols-3 min-h-[620px]">
+        <!-- Left Panel: Context & Quick Prompts -->
+        <div class="p-5 border-r border-slate-800 bg-slate-950/80 flex flex-col justify-between">
+          <div>
+            <div class="flex items-center space-x-2 text-cyan-400 font-bold mb-2">
+              <i data-lucide="bot" class="w-5 h-5"></i>
+              <span>AutoBot 360° (IA)</span>
+            </div>
+            <p class="text-xs text-slate-400 mb-4">
+              Simulador del Agente de IA para WhatsApp Business API. Atiende consultas instantáneas, valida stock físico y emite cotizaciones formales.
+            </p>
+
+            <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-1">Nombre del Cliente / Taller:</label>
+            <input type="text" id="chat-client-name" value="Taller Mecánico La 80" class="w-full text-xs p-2.5 bg-slate-900 border border-slate-700 rounded-lg text-slate-200 mb-4 outline-none focus:border-cyan-500">
+
+            <label class="text-xs font-semibold text-slate-400 uppercase tracking-wider block mb-2">Consultas Rápidas:</label>
+            <div class="space-y-2 mb-4">
+              <button onclick="sendQuickPrompt('¿Tienen pastillas de freno y filtro de aceite para Renault Sandero?')" class="w-full text-left p-2.5 bg-slate-900/90 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs text-slate-300 transition">
+                ⚡ Pastillas + Filtro (Sandero)
+              </button>
+              <button onclick="sendQuickPrompt('Cotízame una batería de 60Ah y un alternador')" class="w-full text-left p-2.5 bg-slate-900/90 hover:bg-slate-800 border border-slate-800 rounded-lg text-xs text-slate-300 transition">
+                ⚡ Batería 12V 60Ah + Alternador
+              </button>
+            </div>
+
+            <div class="bg-cyan-950/40 border border-cyan-800/40 p-3 rounded-xl mb-3">
+              <div class="flex items-center gap-1.5 text-cyan-400 font-bold text-xs mb-2">
+                <i data-lucide="camera" class="w-4 h-4"></i>
+                <span>Simulador de Cámara & Visión IA</span>
+              </div>
+              <p class="text-[11px] text-slate-400 mb-2">Prueba cómo el sistema reconoce una pieza o placa desde fotos de muestra:</p>
+              <div class="grid grid-cols-2 gap-1.5">
+                <button onclick="sendImageSample('pastilla', 'Pastillas_Desgastadas.jpg')" class="p-2 bg-slate-900 hover:bg-cyan-900/50 border border-slate-800 rounded-lg text-[11px] text-slate-200 text-left font-medium flex items-center gap-1">
+                  📸 Pastillas
+                </button>
+                <button onclick="sendImageSample('bateria', 'Bateria_12V.jpg')" class="p-2 bg-slate-900 hover:bg-cyan-900/50 border border-slate-800 rounded-lg text-[11px] text-slate-200 text-left font-medium flex items-center gap-1">
+                  📸 Batería
+                </button>
+                <button onclick="sendImageSample('filtro', 'Filtro_Aceite.jpg')" class="p-2 bg-slate-900 hover:bg-cyan-900/50 border border-slate-800 rounded-lg text-[11px] text-slate-200 text-left font-medium flex items-center gap-1">
+                  📸 Filtro
+                </button>
+                <button onclick="sendImageSample('placa', 'Placa_MED842.jpg')" class="p-2 bg-slate-900 hover:bg-cyan-900/50 border border-slate-800 rounded-lg text-[11px] text-slate-200 text-left font-medium flex items-center gap-1">
+                  🚗 Placa (OCR)
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-4 border-t border-slate-800/80 text-[11px] text-slate-500 flex items-center justify-between">
+            <span>Latencia esperada: <strong class="text-emerald-400">&lt; 2 seg</strong></span>
+            <span class="bg-emerald-500/10 text-emerald-400 px-2 py-0.5 rounded-full border border-emerald-500/20">WMS Conectado</span>
+          </div>
+        </div>
+
+        <!-- Right Panel: WhatsApp Chat Mockup -->
+        <div class="md:col-span-2 flex flex-col bg-[#0b141a]">
+          <!-- WhatsApp Header -->
+          <div class="bg-[#202c33] px-4 py-3 flex items-center justify-between border-b border-slate-800">
+            <div class="flex items-center space-x-3">
+              <div class="relative">
+                <div class="w-10 h-10 rounded-full bg-emerald-600 flex items-center justify-center font-bold text-white shadow">
+                  CS
+                </div>
+                <span class="w-3 h-3 bg-emerald-400 rounded-full border-2 border-[#202c33] absolute bottom-0 right-0"></span>
+              </div>
+              <div>
+                <h4 class="text-sm font-semibold text-slate-100 flex items-center gap-1.5">
+                  Carsystem Repuestos Oficial
+                  <i data-lucide="badge-check" class="w-4 h-4 text-emerald-400"></i>
+                </h4>
+                <p class="text-xs text-emerald-400 font-medium">Asistente IA · En línea 24/7</p>
+              </div>
+            </div>
+            <div class="flex space-x-2 text-slate-400">
+              <i data-lucide="phone" class="w-5 h-5"></i>
+              <i data-lucide="more-vertical" class="w-5 h-5"></i>
+            </div>
+          </div>
+
+          <!-- Messages Stream -->
+          <div id="chat-messages" class="flex-1 p-4 overflow-y-auto space-y-3 text-sm">
+            <div class="chat-bubble-bot p-3 max-w-[85%] shadow text-slate-200">
+              ¡Hola! 👋 Bienvenido a la línea inteligente de <strong>Carsystem</strong>. ¿En qué podemos colaborar con tu vehículo o taller hoy?
+            </div>
+          </div>
+
+          <!-- Input Bar -->
+          <form onsubmit="handleChatSubmit(event)" class="bg-[#202c33] p-3 flex items-center space-x-2 border-t border-slate-800">
+            <button type="button" onclick="sendImageSample('pastilla', 'Pastilla_Freno_Camara.jpg')" title="Simular foto de repuesto con cámara" class="text-slate-400 hover:text-emerald-400 p-1.5 rounded-lg transition hover:bg-slate-800">
+              <i data-lucide="camera" class="w-5 h-5"></i>
+            </button>
+            <input type="text" id="chat-input" placeholder="Escribe tu consulta o haz clic en la cámara..." 
+              class="flex-1 bg-[#2a3942] text-slate-100 text-sm px-4 py-2.5 rounded-xl border border-transparent focus:border-cyan-500 outline-none">
+            <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white p-2.5 rounded-xl transition flex items-center justify-center">
+              <i data-lucide="send" class="w-4 h-4"></i>
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: WMS & CONTROL DE BODEGA -->
+    <div id="view-inventory" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2">
+            <i data-lucide="boxes" class="w-5 h-5 text-amber-500"></i>
+            Control y Saneamiento de Inventario (WMS 360°)
+          </h3>
+          <p class="text-sm text-slate-500 mt-1">
+            Resuelve la causa raíz del diagnóstico: discrepancia sistemática entre el sistema y la bodega física.
+          </p>
+        </div>
+        <button onclick="syncInventoryAll()" class="bg-amber-600 hover:bg-amber-500 text-white px-5 py-2.5 rounded-xl font-bold text-sm shadow-md hover:shadow-lg transition flex items-center gap-2">
+          <i data-lucide="refresh-cw" class="w-4 h-4"></i>
+          Ejecutar Conteo Cíclico & Sincronizar
+        </button>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-slate-50 text-slate-600 border-b border-slate-200 uppercase text-xs font-bold">
+              <tr>
+                <th class="p-4">SKU</th>
+                <th class="p-4">Producto</th>
+                <th class="p-4">Ubicación</th>
+                <th class="p-4 text-center">Stock Registrado</th>
+                <th class="p-4 text-center">Conteo Físico Real</th>
+                <th class="p-4 text-center">Diferencia</th>
+                <th class="p-4 text-center">Estado de Alerta</th>
+              </tr>
+            </thead>
+            <tbody id="inventory-table-body" class="divide-y divide-slate-100">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: TABLERO ANALITICO GERENCIAL -->
+    <div id="view-dashboard" class="hidden space-y-6">
+      <!-- KPI Stats Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="flex items-center justify-between text-slate-500 text-xs font-bold uppercase mb-2">
+            <span>Tasa de Conversión</span>
+            <i data-lucide="trending-up" class="w-4 h-4 text-cyan-600"></i>
+          </div>
+          <div class="text-3xl font-extrabold text-slate-900" id="kpi-conversion">45.8%</div>
+          <div class="text-xs text-emerald-600 font-semibold mt-1 flex items-center gap-1">
+            <i data-lucide="arrow-up" class="w-3.5 h-3.5"></i> Meta con Solución: &gt; 70%
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="flex items-center justify-between text-slate-500 text-xs font-bold uppercase mb-2">
+            <span>Tiempo Medio Ganadas</span>
+            <i data-lucide="clock" class="w-4 h-4 text-emerald-600"></i>
+          </div>
+          <div class="text-3xl font-extrabold text-slate-900" id="kpi-tiempo-ganadas">4.0 h</div>
+          <div class="text-xs text-slate-500 mt-1">Con Bot IA: &lt; 10 min</div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="flex items-center justify-between text-slate-500 text-xs font-bold uppercase mb-2">
+            <span>Demora en Perdidas</span>
+            <i data-lucide="alert-triangle" class="w-4 h-4 text-rose-600"></i>
+          </div>
+          <div class="text-3xl font-extrabold text-rose-600" id="kpi-tiempo-perdidas">8.8 h</div>
+          <div class="text-xs text-rose-500 font-medium mt-1">Causa principal de fuga</div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <div class="flex items-center justify-between text-slate-500 text-xs font-bold uppercase mb-2">
+            <span>Ventas Acumuladas</span>
+            <i data-lucide="dollar-sign" class="w-4 h-4 text-purple-600"></i>
+          </div>
+          <div class="text-3xl font-extrabold text-slate-900" id="kpi-facturacion">$6.3M</div>
+          <div class="text-xs text-slate-500 mt-1">Base histórica Carsystem</div>
+        </div>
+      </div>
+
+      <!-- Charts Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <h4 class="text-sm font-bold text-slate-800 uppercase mb-4 flex items-center gap-2">
+            <i data-lucide="pie-chart" class="w-4 h-4 text-rose-500"></i>
+            Motivos de Pérdida de Cotizaciones (Diagnóstico)
+          </h4>
+          <div class="h-64">
+            <canvas id="chartMotivos"></canvas>
+          </div>
+        </div>
+
+        <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm">
+          <h4 class="text-sm font-bold text-slate-800 uppercase mb-4 flex items-center gap-2">
+            <i data-lucide="bar-chart-2" class="w-4 h-4 text-cyan-600"></i>
+            Impacto del Tiempo de Respuesta en el Cierre
+          </h4>
+          <div class="h-64">
+            <canvas id="chartTiempos"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: CIBERSEGURIDAD & HABEAS DATA -->
+    <div id="view-legal" class="hidden space-y-6">
+      <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+        <div class="flex items-start justify-between">
+          <div>
+            <h3 class="text-lg font-extrabold text-slate-900 flex items-center gap-2">
+              <i data-lucide="shield-check" class="w-5 h-5 text-blue-600"></i>
+              Módulo de Protección de Datos Personales (Ley 1581 de 2012)
+            </h3>
+            <p class="text-sm text-slate-500 mt-1 max-w-2xl">
+              Garantiza el consentimiento explícito previo al envío de cotizaciones comerciales por WhatsApp, protegiendo a Carsystem contra sanciones de la SIC.
+            </p>
+          </div>
+          <span class="bg-blue-50 text-blue-700 text-xs px-3 py-1 rounded-full font-bold border border-blue-200">
+            Habeas Data Audit
+          </span>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+        <div class="p-4 border-b border-slate-100 flex items-center justify-between">
+          <h4 class="text-sm font-bold text-slate-800">Directorio de Clientes y Estado de Consentimiento</h4>
+        </div>
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-slate-50 text-slate-600 border-b border-slate-200 text-xs font-bold uppercase">
+              <tr>
+                <th class="p-4">ID</th>
+                <th class="p-4">Nombre / Taller</th>
+                <th class="p-4">Segmento</th>
+                <th class="p-4">Canal</th>
+                <th class="p-4 text-center">Autorización Tratamiento</th>
+                <th class="p-4 text-center">Acción de Regularización</th>
+              </tr>
+            </thead>
+            <tbody id="clients-table-body" class="divide-y divide-slate-100">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="bg-white border-t border-slate-200 py-4 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
+      <div>Plataforma AutoConexión Carsystem 360° · Solución Reto Empresarial Estud-IA</div>
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center gap-1 font-semibold text-slate-700">
+          <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Backend FastAPI Operativo
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Tab switching
+    function switchTab(tab) {
+      const tabs = ['catalog', 'chat', 'inventory', 'dashboard', 'legal'];
+      tabs.forEach(t => {
+        document.getElementById(`view-${t}`).classList.add('hidden');
+        const btn = document.getElementById(`tab-${t}`);
+        btn.classList.remove('bg-cyan-600', 'text-white');
+        btn.classList.add('text-slate-300');
+      });
+      document.getElementById(`view-${tab}`).classList.remove('hidden');
+      const activeBtn = document.getElementById(`tab-${tab}`);
+      activeBtn.classList.add('bg-cyan-600', 'text-white');
+      activeBtn.classList.remove('text-slate-300');
+      
+      if (tab === 'catalog') loadCatalog();
+      if (tab === 'inventory') loadInventory();
+      if (tab === 'dashboard') loadDashboard();
+      if (tab === 'legal') loadClients();
+    }
+
+    // Load Catalog
+    async function loadCatalog() {
+      const q = document.getElementById('catalog-search').value;
+      const cat = document.getElementById('catalog-category').value;
+      const res = await fetch(`/api/catalog?q=${encodeURIComponent(q)}&categoria=${encodeURIComponent(cat)}`);
+      const data = await res.json();
+      
+      document.getElementById('catalog-count').innerText = `${data.length} repuestos encontrados`;
+      const grid = document.getElementById('products-grid');
+      grid.innerHTML = '';
+      
+      data.forEach(item => {
+        const stock = item.stock_fisico !== '' ? parseInt(item.stock_fisico) : 0;
+        const isAvailable = stock > 0;
+        const card = document.createElement('div');
+        card.className = "bg-white rounded-2xl p-5 border border-slate-200 shadow-sm hover:shadow-md transition flex flex-col justify-between";
+        card.innerHTML = `
+          <div>
+            <div class="flex items-start justify-between gap-2 mb-2">
+              <span class="text-[11px] font-bold uppercase tracking-wider text-cyan-600 bg-cyan-50 px-2 py-0.5 rounded-md border border-cyan-100">${item.categoria}</span>
+              <span class="text-xs font-mono font-bold text-slate-400">${item.sku}</span>
+            </div>
+            <h4 class="font-bold text-slate-900 text-base mb-1">${item.producto}</h4>
+            <p class="text-xs text-slate-500 mb-3">Marca: <strong class="text-slate-700">${item.marca}</strong> · Ref: ${item.referencia_fabricante}</p>
+            
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100 mb-4 space-y-1.5 text-xs">
+              <div class="flex items-center gap-1.5 text-slate-600">
+                <i data-lucide="check-circle" class="w-3.5 h-3.5 text-emerald-500"></i>
+                <span>Compatibilidad: <strong>${item.compatibilidad}</strong></span>
+              </div>
+              <div class="flex items-center gap-1.5 text-slate-600">
+                <i data-lucide="shield" class="w-3.5 h-3.5 text-blue-500"></i>
+                <span>Garantía: <strong>${item.garantia_meses} meses</strong></span>
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-end justify-between mb-3">
+              <div>
+                <span class="text-[11px] text-slate-400 uppercase font-semibold">Precio Unitario</span>
+                <div class="text-lg font-extrabold text-slate-900">$${parseInt(item.precio_cop).toLocaleString('es-CO')} <span class="text-xs text-slate-400 font-normal">COP</span></div>
+              </div>
+              <div class="text-right">
+                <span class="text-xs font-semibold px-2 py-0.5 rounded-full ${isAvailable ? 'bg-emerald-50 text-emerald-700 border border-emerald-200' : 'bg-rose-50 text-rose-700 border border-rose-200'}">
+                  ${isAvailable ? `${stock} en bodega` : 'Agotado'}
+                </span>
+              </div>
+            </div>
+            <button onclick="quoteDirectly('${item.producto}', '${item.sku}')" class="w-full py-2 bg-slate-900 hover:bg-cyan-600 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-sm">
+              <i data-lucide="message-square" class="w-3.5 h-3.5"></i> Cotizar por WhatsApp IA
+            </button>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+
+    // Direct quote from catalog
+    function quoteDirectly(prodName, sku) {
+      switchTab('chat');
+      sendQuickPrompt(`Hola, por favor cotízame ${prodName} (${sku}) para mi vehículo`);
+    }
+
+    // Chat handling
+    async function handleChatSubmit(e) {
+      if (e) e.preventDefault();
+      const input = document.getElementById('chat-input');
+      const text = input.value.trim();
+      if (!text) return;
+      input.value = '';
+      await postChatMessage(text);
+    }
+
+    function sendQuickPrompt(promptText) {
+      document.getElementById('chat-input').value = promptText;
+      handleChatSubmit();
+    }
+
+    async function sendImageSample(sampleType, fileName) {
+      const messagesDiv = document.getElementById('chat-messages');
+      const clientName = document.getElementById('chat-client-name').value;
+
+      // Add user message with photo badge
+      const userBubble = document.createElement('div');
+      userBubble.className = "chat-bubble-user p-3 max-w-[85%] ml-auto shadow text-slate-100 space-y-1.5";
+      userBubble.innerHTML = `
+        <div class="bg-black/30 p-2 rounded-lg flex items-center gap-2 border border-white/10 text-xs">
+          <i data-lucide="image" class="w-4 h-4 text-emerald-300"></i>
+          <span class="font-mono text-emerald-200">${fileName}</span>
+          <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded ml-auto">Foto Capturada</span>
+        </div>
+        <p class="text-xs">Hola, ¿tienen disponibilidad de este repuesto para mi vehículo?</p>
+      `;
+      messagesDiv.appendChild(userBubble);
+      lucide.createIcons();
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+      // Typing indicator
+      const typing = document.createElement('div');
+      typing.className = "chat-bubble-bot p-2.5 max-w-[75%] text-xs text-slate-400 italic";
+      typing.innerText = "🔍 AutoBot 360° analizando geometría de imagen y cruzando con inventario WMS...";
+      messagesDiv.appendChild(typing);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ message: 'foto de repuesto', cliente_nombre: clientName, image_sample: sampleType })
+        });
+        const data = await res.json();
+        messagesDiv.removeChild(typing);
+
+        const botBubble = document.createElement('div');
+        botBubble.className = "chat-bubble-bot p-3.5 max-w-[90%] shadow space-y-2";
+        
+        let formatted = data.reply.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+        botBubble.innerHTML = formatted;
+
+        if (data.found && data.items && data.items.length > 0) {
+          const actionBtn = document.createElement('div');
+          actionBtn.className = "pt-2 flex gap-2";
+          actionBtn.innerHTML = `
+            <button onclick="alert('¡Cotización ${data.quote_id} aprobada! Orden enviada a preparación en bodega.')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-1.5 px-3 rounded-lg shadow transition flex items-center gap-1">
+              ✓ Aprobar y Comprar (${data.quote_id})
+            </button>
+          `;
+          botBubble.appendChild(actionBtn);
+        }
+
+        messagesDiv.appendChild(botBubble);
+        lucide.createIcons();
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      } catch (err) {
+        typing.innerText = "Error de conexión con el bot.";
+      }
+    }
+
+    async function postChatMessage(text) {
+      const messagesDiv = document.getElementById('chat-messages');
+      const clientName = document.getElementById('chat-client-name').value;
+
+      // Add user message
+      const userBubble = document.createElement('div');
+      userBubble.className = "chat-bubble-user p-3 max-w-[85%] ml-auto shadow text-slate-100";
+      userBubble.innerText = text;
+      messagesDiv.appendChild(userBubble);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+      // Typing indicator
+      const typing = document.createElement('div');
+      typing.className = "chat-bubble-bot p-2.5 max-w-[60%] text-xs text-slate-400 italic";
+      typing.innerText = "AutoBot 360° consultando bodega y generando cotización...";
+      messagesDiv.appendChild(typing);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({ message: text, cliente_nombre: clientName })
+        });
+        const data = await res.json();
+        messagesDiv.removeChild(typing);
+
+        const botBubble = document.createElement('div');
+        botBubble.className = "chat-bubble-bot p-3.5 max-w-[90%] shadow space-y-2";
+        
+        let formatted = data.reply.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+        botBubble.innerHTML = formatted;
+
+        if (data.found && data.items && data.items.length > 0) {
+          const actionBtn = document.createElement('div');
+          actionBtn.className = "pt-2 flex gap-2";
+          actionBtn.innerHTML = `
+            <button onclick="alert('¡Cotización ${data.quote_id} aprobada! Orden enviada a preparación en bodega.')" class="bg-emerald-600 hover:bg-emerald-500 text-white text-xs font-bold py-1.5 px-3 rounded-lg shadow transition flex items-center gap-1">
+              ✓ Aprobar y Comprar (${data.quote_id})
+            </button>
+          `;
+          botBubble.appendChild(actionBtn);
+        }
+
+        messagesDiv.appendChild(botBubble);
+        messagesDiv.scrollTop = messagesDiv.scrollHeight;
+      } catch (err) {
+        typing.innerText = "Error de conexión con el bot.";
+      }
+    }
+
+    // Load Inventory
+    async function loadInventory() {
+      const res = await fetch('/api/inventory');
+      const data = await res.json();
+      const tbody = document.getElementById('inventory-table-body');
+      tbody.innerHTML = '';
+
+      data.forEach(item => {
+        const diff = parseInt(item.diferencia);
+        const hasDiff = diff !== 0;
+        const tr = document.createElement('tr');
+        tr.className = hasDiff ? "bg-rose-50/50 hover:bg-rose-50" : "hover:bg-slate-50";
+        tr.innerHTML = `
+          <td class="p-4 font-mono font-bold text-slate-700">${item.sku}</td>
+          <td class="p-4 font-medium text-slate-900">${item.producto}</td>
+          <td class="p-4 text-xs font-semibold text-slate-500">${item.ubicacion}</td>
+          <td class="p-4 text-center font-bold text-slate-600">${item.stock_registrado}</td>
+          <td class="p-4 text-center font-bold text-slate-900">${item.stock_fisico}</td>
+          <td class="p-4 text-center font-bold ${hasDiff ? 'text-rose-600' : 'text-emerald-600'}">
+            ${diff > 0 ? `+${diff}` : diff}
+          </td>
+          <td class="p-4 text-center">
+            <span class="text-xs px-2.5 py-1 rounded-full font-bold ${hasDiff ? 'bg-rose-100 text-rose-700' : 'bg-emerald-100 text-emerald-700'}">
+              ${hasDiff ? '⚠️ Descuadre Crítico' : '✓ Cuadrado'}
+            </span>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      lucide.createIcons();
+    }
+
+    async function syncInventoryAll() {
+      const res = await fetch('/api/inventory/sync-all', { method: 'POST' });
+      const data = await res.json();
+      alert(data.message);
+      loadInventory();
+    }
+
+    // Load Clients / Legal
+    async function loadClients() {
+      const res = await fetch('/api/clients');
+      const data = await res.json();
+      const tbody = document.getElementById('clients-table-body');
+      tbody.innerHTML = '';
+
+      data.forEach(cli => {
+        const isAuth = cli.autoriza_tratamiento_datos === 'Sí';
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-50";
+        tr.innerHTML = `
+          <td class="p-4 font-mono font-bold text-slate-600">${cli.cliente_id}</td>
+          <td class="p-4 font-medium text-slate-900">${cli.nombre}</td>
+          <td class="p-4 text-xs text-slate-500 font-semibold">${cli.segmento}</td>
+          <td class="p-4 text-xs text-slate-500">${cli.canal_preferido}</td>
+          <td class="p-4 text-center">
+            <span class="text-xs px-2.5 py-1 rounded-full font-bold ${isAuth ? 'bg-emerald-100 text-emerald-700' : 'bg-amber-100 text-amber-700'}">
+              ${isAuth ? '✓ Autorizado' : '⚠️ No Registrado'}
+            </span>
+          </td>
+          <td class="p-4 text-center">
+            ${!isAuth ? `
+              <button onclick="authorizeClient('${cli.cliente_id}')" class="bg-blue-600 hover:bg-blue-500 text-white text-xs font-semibold px-3 py-1 rounded-lg shadow transition">
+                Registrar Habeas Data
+              </button>
+            ` : `<span class="text-xs text-slate-400 font-semibold">Al día</span>`}
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+      lucide.createIcons();
+    }
+
+    async function authorizeClient(cliId) {
+      await fetch(`/api/clients/authorize?cliente_id=${cliId}`, { method: 'POST' });
+      loadClients();
+    }
+
+    // Dashboard & Charts
+    let chart1 = null;
+    let chart2 = null;
+
+    async function loadDashboard() {
+      const res = await fetch('/api/metrics');
+      const data = await res.json();
+
+      document.getElementById('kpi-conversion').innerText = `${data.tasa_conversion}%`;
+      document.getElementById('kpi-tiempo-ganadas').innerText = `${data.tiempo_medio_ganadas_h} h`;
+      document.getElementById('kpi-tiempo-perdidas').innerText = `${data.tiempo_medio_perdidas_h} h`;
+      document.getElementById('kpi-facturacion').innerText = `$${(data.total_facturado_cop / 1000000).toFixed(1)}M`;
+
+      // Chart 1: Motivos
+      if (chart1) chart1.destroy();
+      const ctx1 = document.getElementById('chartMotivos').getContext('2d');
+      chart1 = new Chart(ctx1, {
+        type: 'doughnut',
+        data: {
+          labels: Object.keys(data.motivos_perdida),
+          datasets: [{
+            data: Object.values(data.motivos_perdida),
+            backgroundColor: ['#e11d48', '#f97316', '#eab308', '#06b6d4', '#64748b']
+          }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+      });
+
+      // Chart 2: Tiempos
+      if (chart2) chart2.destroy();
+      const ctx2 = document.getElementById('chartTiempos').getContext('2d');
+      chart2 = new Chart(ctx2, {
+        type: 'bar',
+        data: {
+          labels: ['Cotizaciones Ganadas', 'Cotizaciones Perdidas', 'Con Solución AutoConexión 360°'],
+          datasets: [{
+            label: 'Horas de Respuesta Promedio',
+            data: [data.tiempo_medio_ganadas_h, data.tiempo_medio_perdidas_h, 0.05],
+            backgroundColor: ['#10b981', '#f43f5e', '#06b6d4'],
+            borderRadius: 8
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { y: { beginAtZero: true, title: { display: true, text: 'Horas' } } }
+        }
+      });
+      lucide.createIcons();
+    }
+
+    // Init
+    window.onload = () => {
+      loadCatalog();
+      lucide.createIcons();
+    };
+  </script>
+</body>
+</html>
+

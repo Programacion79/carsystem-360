@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Póster Académico - Solución Carsystem 360°</title>
+  <style>
+    :root {
+      --primary: #0f3460;
+      --secondary: #e94560;
+      --accent: #00adb5;
+      --dark: #1a1a2e;
+      --light: #f8f9fa;
+      --card-bg: #ffffff;
+      --border: #e2e8f0;
+      --text: #2d3748;
+      --text-muted: #718096;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background-color: #f0f2f5;
+      color: var(--text);
+      line-height: 1.45;
+      padding: 24px;
+    }
+    .poster-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      background: var(--light);
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    header {
+      background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+      color: white;
+      padding: 32px 40px;
+      position: relative;
+    }
+    .badge-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 12px;
+      flex-wrap: wrap;
+    }
+    .badge {
+      background: rgba(255,255,255,0.15);
+      border: 1px solid rgba(255,255,255,0.25);
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+    }
+    .badge-accent {
+      background: var(--secondary);
+      border: none;
+    }
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      line-height: 1.2;
+    }
+    .subtitle {
+      font-size: 1.15rem;
+      color: #94a3b8;
+      font-weight: 400;
+    }
+    .grid-layout {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      padding: 28px;
+    }
+    @media (max-width: 1024px) {
+      .grid-layout { grid-template-columns: 1fr; }
+    }
+    .column {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+    }
+    .card {
+      background: var(--card-bg);
+      border-radius: 10px;
+      padding: 22px;
+      border: 1px solid var(--border);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+    .card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 2px solid #eef2f6;
+      padding-bottom: 8px;
+    }
+    .metric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 10px;
+    }
+    .metric-box {
+      background: #f8fafc;
+      border-left: 4px solid var(--secondary);
+      padding: 12px;
+      border-radius: 6px;
+    }
+    .metric-val {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--secondary);
+    }
+    .metric-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.25;
+    }
+    .table-custom {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      margin-top: 8px;
+    }
+    .table-custom th, .table-custom td {
+      padding: 8px 10px;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .table-custom th {
+      background: #f1f5f9;
+      color: var(--primary);
+      font-weight: 600;
+    }
+    .discipline-tag {
+      display: inline-block;
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .flow-step {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .flow-num {
+      width: 28px;
+      height: 28px;
+      background: var(--primary);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      font-weight: bold;
+      flex-shrink: 0;
+    }
+    .flow-body h4 {
+      font-size: 0.95rem;
+      color: var(--dark);
+      margin-bottom: 2px;
+    }
+    .flow-body p {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+    }
+    .pill-kpi {
+      background: #ecfdf5;
+      color: #047857;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+    }
+    footer {
+      background: #e2e8f0;
+      padding: 16px 28px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.85rem;
+      color: #475569;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+<div class="poster-container">
+  <header>
+    <div class="badge-bar">
+      <span class="badge badge-accent">BOOTCAMPS ESTUD-IA</span>
+      <span class="badge">ALCALDÍA DE MEDELLÍN · SAPIENCIA · ESUMER</span>
+      <span class="badge">RETO EMPRESARIAL CARSYSTEM</span>
+    </div>
+    <h1>AutoConexión 360°: Transformación Digital Omnicanal e Integrada</h1>
+    <div class="subtitle">Ecosistema inteligente para la búsqueda, cotización y compra de repuestos en tiempo real</div>
+  </header>
+
+  <div class="grid-layout">
+    <!-- COLUMNA 1: DIAGNÓSTICO Y EVIDENCIAS -->
+    <div class="column">
+      <div class="card">
+        <div class="card-title">📌 1. Diagnóstico y Problema Prioritario</div>
+        <p style="font-size: 0.9rem; margin-bottom: 12px;">
+          Carsystem sufre de una desconexión crítica entre canales de venta, inventario y gestión comercial, generando fricción severa tanto para talleres mecánicos como particulares.
+        </p>
+        
+        <div class="metric-grid">
+          <div class="metric-box">
+            <div class="metric-val">54.2%</div>
+            <div class="metric-desc">Cotizaciones perdidas (52 de 96 solicitudes).</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-val">8.8 h</div>
+            <div class="metric-desc">Tiempo promedio de respuesta en cotizaciones perdidas.</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-val">-47 und</div>
+            <div class="metric-desc">Descuadre de stock físico vs registrado en SKU clave (Filtro aceite).</div>
+          </div>
+          <div class="metric-box">
+            <div class="metric-val">33.3%</div>
+            <div class="metric-desc">Clientes sin consentimiento formal de Habeas Data.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📊 Evidencias del Expediente Operativo</div>
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th>Causa Crítica</th>
+              <th>Dato Obtenido</th>
+              <th>Impacto Directo</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Respuesta Lenta</strong></td>
+              <td>Promedio general de 8.5h para cotizar</td>
+              <td>Fuga inmediata hacia competidores</td>
+            </tr>
+            <tr>
+              <td><strong>Dispersión Multicanal</strong></td>
+              <td>6 canales aislados (97 WhatsApp, 38 Tel, etc.)</td>
+              <td>Pérdida de trazabilidad y clientes sin atender</td>
+            </tr>
+            <tr>
+              <td><strong>Descuadres Bodega</strong></td>
+              <td>Faltantes en 10 de 12 repuestos analizados</td>
+              <td>Cotizaciones de productos sin disponibilidad</td>
+            </tr>
+            <tr>
+              <td><strong>Postventa Frágil</strong></td>
+              <td>PQRs demoran hasta 6 días en resolverse</td>
+              <td>Pérdida de fidelización de talleres clave</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- COLUMNA 2: PROPUESTA Y APORTES DISCIPLINARES -->
+    <div class="column">
+      <div class="card">
+        <div class="card-title">🚀 2. Solución Integrada: AutoConexión 360°</div>
+        
+        <div class="flow-step">
+          <div class="flow-num">A</div>
+          <div class="flow-body">
+            <h4>Bandeja Omnicanal Centralizada</h4>
+            <p>Unificación de WhatsApp API, Instagram y mostrador en una única consola CRM evitando canales personales.</p>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-num">B</div>
+          <div class="flow-body">
+            <h4>Agente IA de Cotización Instantánea</h4>
+            <p>Bot inteligente que identifica pieza por foto o descripción, consulta stock en vivo y genera cotización en &lt; 2 min.</p>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-num">C</div>
+          <div class="flow-body">
+            <h4>Catálogo Web con Motor de Compatibilidad</h4>
+            <p>Búsqueda guiada por marca/modelo/placa, asegurando el repuesto exacto y reduciendo PQRs a cero.</p>
+          </div>
+        </div>
+
+        <div class="flow-step">
+          <div class="flow-num">D</div>
+          <div class="flow-body">
+            <h4>Sincronización WMS y Alertas de Quiebre</h4>
+            <p>Control estricto de conteo cíclico y reorden automático al alcanzar el stock mínimo de seguridad.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">🧩 Sinergia Interdisciplinar (7 Áreas)</div>
+        <div style="font-size: 0.85rem; display: flex; flex-direction: column; gap: 8px;">
+          <div><span class="discipline-tag">Marketing & Contenidos</span> Pauta con UTMs hacia landing de repuestos de alta rotación y fichas técnicas didácticas.</div>
+          <div><span class="discipline-tag">E-commerce & Web</span> Catálogo autogestionable con pasarela segura (Wompi/PSE) y portal para talleres.</div>
+          <div><span class="discipline-tag">IA & Automatización</span> Asistente conversacional NLP 24/7 conectado al stock para cotizaciones express.</div>
+          <div><span class="discipline-tag">Cloud & Ciberseguridad</span> Arquitectura en AWS, encriptación TLS, roles seguros y módulo de Habeas Data legal.</div>
+          <div><span class="discipline-tag">Analítica de Datos</span> Dashboards en tiempo real con embudos de conversión, rotación y alertas de reposición.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUMNA 3: RUTA, IMPACTO Y RIESGOS -->
+    <div class="column">
+      <div class="card">
+        <div class="card-title">📅 3. Plan de Implementación (12 Semanas)</div>
+        <div style="font-size: 0.85rem; display: flex; flex-direction: column; gap: 10px;">
+          <div style="border-left: 3px solid #0f3460; padding-left: 10px;">
+            <strong>Fase 1: Saneamiento Operativo (Sem 1-3)</strong><br>
+            Conteo físico general de bodega, ajuste en sistema y módulo obligatorio de Habeas Data.
+          </div>
+          <div style="border-left: 3px solid #00adb5; padding-left: 10px;">
+            <strong>Fase 2: Plataforma y Canales (Sem 4-8)</strong><br>
+            Lanzamiento de portal web con catálogo técnico y centralización de WhatsApp Business API.
+          </div>
+          <div style="border-left: 3px solid #e94560; padding-left: 10px;">
+            <strong>Fase 3: IA y Escalabilidad (Sem 9-12)</strong><br>
+            Despliegue del bot de cotización automática y tableros gerenciales en vivo.
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">📈 4. Indicadores de Éxito (KPIs)</div>
+        <table class="table-custom">
+          <thead>
+            <tr>
+              <th>Indicador</th>
+              <th>Actual</th>
+              <th>Meta</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Tiempo de Cotización</td>
+              <td>8.5 horas</td>
+              <td><span class="pill-kpi">&lt; 10 minutos</span></td>
+            </tr>
+            <tr>
+              <td>Conversión Ventas</td>
+              <td>45.8%</td>
+              <td><span class="pill-kpi">&gt; 70%</span></td>
+            </tr>
+            <tr>
+              <td>Precisión Inventario</td>
+              <td>Descuadre -47 u.</td>
+              <td><span class="pill-kpi">&gt; 98% exacto</span></td>
+            </tr>
+            <tr>
+              <td>Resolución PQR</td>
+              <td>Hasta 6 días</td>
+              <td><span class="pill-kpi">&lt; 24 horas</span></td>
+            </tr>
+            <tr>
+              <td>Cumplimiento Datos</td>
+              <td>66.7%</td>
+              <td><span class="pill-kpi">100% legal</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-title">⚠️ Mitigación de Riesgos</div>
+        <div style="font-size: 0.83rem; color: var(--text);">
+          <p><strong>• Resistencia operativa:</strong> Capacitación gamificada mostrando que el sistema agiliza sus comisiones.</p>
+          <p style="margin-top: 6px;"><strong>• Error de IA en repuestos raros:</strong> Regla de escalamiento inmediato a asesor humano con datos prellenados.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div>Equipo Interdisciplinar · Bootcamps Estud-IA Carsystem</div>
+    <div>Póster Académico para Sustentación ante Comité y Jurados evaluadores</div>
+  </footer>
+</div>
+
+</body>
+</html>
+
