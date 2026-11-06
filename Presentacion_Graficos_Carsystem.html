@@ -5,8 +5,8 @@
   <title>Presentación Ejecutiva con Gráficos - Carsystem 360°</title>
   <style>
     @page {
-      size: A4 landscape;
-      margin: 8mm;
+      size: 297mm 210mm; /* A4 Landscape exacto */
+      margin: 0;
     }
     * {
       box-sizing: border-box;
@@ -17,72 +17,82 @@
     }
     body {
       font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: #f8fafc;
+      background: #0f172a;
       color: #0f172a;
     }
-    .slide {
-      width: 100%;
-      height: 190mm;
-      background: white;
-      border: 1px solid #cbd5e1;
-      border-radius: 8px;
-      padding: 16mm 18mm;
-      margin-bottom: 10mm;
+    .slide-page {
+      width: 297mm;
+      height: 210mm;
+      padding: 12mm 14mm;
+      background: #f8fafc;
       page-break-after: always;
+      page-break-inside: avoid;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
       position: relative;
     }
+    /* HEADER */
     .slide-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-bottom: 2px solid #0f172a;
-      padding-bottom: 8px;
-      margin-bottom: 12px;
+      background: #ffffff;
+      padding: 10px 18px;
+      border-radius: 8px;
+      border: 1px solid #e2e8f0;
+      border-left: 5px solid #06b6d4;
+      margin-bottom: 10px;
     }
-    .slide-title-area h2 {
-      font-size: 20px;
+    .slide-header h2 {
+      font-size: 18px;
       font-weight: 800;
       color: #0f172a;
+      line-height: 1.2;
     }
-    .slide-title-area p {
-      font-size: 11px;
+    .slide-header p {
+      font-size: 10.5px;
       color: #64748b;
+      margin-top: 1px;
     }
     .badge {
-      background: #0f172a;
-      color: white;
-      font-size: 10px;
-      font-weight: 700;
+      font-size: 9.5px;
+      font-weight: 800;
       padding: 3px 10px;
       border-radius: 20px;
+      background: #0f172a;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
     .badge-cyan {
       background: #06b6d4;
       color: #0f172a;
     }
+    /* FOOTER */
     .slide-footer {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      border-top: 1px solid #e2e8f0;
-      padding-top: 6px;
-      font-size: 10px;
+      padding: 6px 4px 0 4px;
+      font-size: 9.5px;
       color: #94a3b8;
+      border-top: 1px solid #e2e8f0;
     }
+    /* GRIDS */
     .grid-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 12px;
       flex: 1;
+      margin-bottom: 8px;
     }
     .grid-3 {
       display: grid;
       grid-template-columns: 1fr 1fr 1fr;
-      gap: 14px;
+      gap: 12px;
       flex: 1;
+      margin-bottom: 8px;
     }
     .card {
       background: #ffffff;
@@ -91,214 +101,229 @@
       padding: 12px 14px;
       display: flex;
       flex-direction: column;
+      justify-content: space-between;
       box-shadow: 0 1px 3px rgba(0,0,0,0.02);
     }
     .card-title {
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 800;
       color: #0f172a;
       margin-bottom: 8px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      border-bottom: 1px solid #f1f5f9;
+      border-bottom: 2px solid #f1f5f9;
       padding-bottom: 4px;
     }
-    .kpi-row {
+    /* KPIS HEADER ROW */
+    .kpi-grid {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
       gap: 10px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
-    .kpi-box {
-      background: #f8fafc;
-      border-left: 3px solid #06b6d4;
-      padding: 8px 10px;
-      border-radius: 4px;
+    .kpi-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-left: 4px solid #06b6d4;
+      border-radius: 8px;
+      padding: 8px 12px;
     }
-    .kpi-box-danger {
+    .kpi-card-danger {
       border-left-color: #f43f5e;
     }
-    .kpi-val {
+    .kpi-num {
       font-size: 20px;
       font-weight: 800;
       color: #0f172a;
       line-height: 1.1;
     }
-    .kpi-lbl {
+    .kpi-sub {
       font-size: 9px;
       color: #64748b;
       margin-top: 2px;
     }
-    /* Estilos para gráficos vectoriales */
-    .bar-row {
+    /* GRAPH BARS */
+    .chart-item {
+      margin-bottom: 7px;
+    }
+    .chart-label-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 10px;
+      font-weight: 700;
+      color: #334155;
+      margin-bottom: 2px;
+    }
+    .chart-bar-bg {
+      width: 100%;
+      height: 18px;
+      background: #f1f5f9;
+      border-radius: 4px;
+      overflow: hidden;
       display: flex;
       align-items: center;
-      margin-bottom: 6px;
-      font-size: 10px;
     }
-    .bar-label {
-      width: 120px;
-      font-weight: 600;
-      color: #334155;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .bar-track {
-      flex: 1;
-      height: 16px;
-      background: #f1f5f9;
-      border-radius: 3px;
-      margin: 0 8px;
-      overflow: hidden;
-      position: relative;
-    }
-    .bar-fill {
+    .chart-bar-fill {
       height: 100%;
-      border-radius: 3px;
+      border-radius: 4px;
       display: flex;
       align-items: center;
       justify-content: flex-end;
       padding-right: 6px;
       color: white;
       font-size: 9px;
-      font-weight: bold;
+      font-weight: 800;
+      letter-spacing: 0.3px;
     }
-    .bar-val {
-      width: 55px;
-      text-align: right;
-      font-weight: 700;
-      color: #0f172a;
-    }
-    .table-clean {
+    /* TABLES */
+    .table-custom {
       width: 100%;
       border-collapse: collapse;
       font-size: 10px;
     }
-    .table-clean th, .table-clean td {
+    .table-custom th, .table-custom td {
       padding: 6px 8px;
       text-align: left;
       border-bottom: 1px solid #f1f5f9;
     }
-    .table-clean th {
+    .table-custom th {
       background: #f8fafc;
-      font-weight: 700;
+      font-weight: 800;
       color: #0f172a;
     }
   </style>
 </head>
 <body>
 
-  <!-- SLIDE 1: PORTADA & RADIOGRAFÍA EJECUTIVA -->
-  <div class="slide">
+  <!-- ==========================================
+       SLIDE 1: PORTADA & RADIOGRAFÍA DEL NEGOCIO
+       ========================================== -->
+  <div class="slide-page">
     <div class="slide-header">
-      <div class="slide-title-area">
-        <span class="badge badge-cyan" style="margin-bottom: 4px; display: inline-block;">RETO EMPRESARIAL ESTUD-IA</span>
-        <h2>AutoConexión Carsystem 360° · Diagnóstico y Sustentación</h2>
-        <p>Alcaldía de Medellín · Sapiencia · Esumer · Análisis Cuantitativo de las 9 Bases de Datos</p>
+      <div>
+        <span class="badge badge-cyan">CASO EMPRESARIAL CARSYSTEM · ESTUD-IA</span>
+        <h2 style="margin-top: 2px;">AutoConexión Carsystem 360° · Diagnóstico de las 9 Bases de Datos</h2>
+        <p>Alcaldía de Medellín · Sapiencia · Esumer · Sustentación Ejecutiva Interdisciplinar</p>
       </div>
       <span class="badge">DIAPOSITIVA 1 / 4</span>
     </div>
 
-    <!-- KPIs de Impacto Global -->
-    <div class="kpi-row">
-      <div class="kpi-box kpi-box-danger">
-        <div class="kpi-val" style="color: #e11d48;">54.2%</div>
-        <div class="kpi-lbl">Cotizaciones Perdidas (52 de 96)</div>
+    <!-- 4 Tarjetas KPI -->
+    <div class="kpi-grid">
+      <div class="kpi-card kpi-card-danger">
+        <div class="kpi-num" style="color: #e11d48;">54.2%</div>
+        <div class="kpi-sub">Cotizaciones Perdidas (52 de 96)</div>
       </div>
-      <div class="kpi-box kpi-box-danger">
-        <div class="kpi-val" style="color: #e11d48;">8.8 Horas</div>
-        <div class="kpi-lbl">Tiempo Medio Respuesta en Pérdidas</div>
+      <div class="kpi-card kpi-card-danger">
+        <div class="kpi-num" style="color: #e11d48;">8.8 Horas</div>
+        <div class="kpi-sub">Demora Promedio en Cotizaciones Perdidas</div>
       </div>
-      <div class="kpi-box">
-        <div class="kpi-val" style="color: #0284c7;">-47 unds</div>
-        <div class="kpi-lbl">Descuadre Máximo Bodega (Filtros MO-201)</div>
+      <div class="kpi-card">
+        <div class="kpi-num" style="color: #0284c7;">-47 unds</div>
+        <div class="kpi-sub">Descuadre Máximo Bodega (Filtros MO-201)</div>
       </div>
-      <div class="kpi-box">
-        <div class="kpi-val" style="color: #059669;">$27.5M COP</div>
-        <div class="kpi-lbl">Ventas Totales Facturadas</div>
+      <div class="kpi-card">
+        <div class="kpi-num" style="color: #059669;">$27.5M COP</div>
+        <div class="kpi-sub">Facturación Acumulada en Ventas</div>
       </div>
     </div>
 
+    <!-- 2 Columnas de Análisis -->
     <div class="grid-2">
-      <!-- Visión General -->
+      <!-- Columna 1 -->
       <div class="card">
         <div class="card-title">
-          <span>🎯 El Problema Central: Cuello de Botella en la Cotización</span>
-          <span style="font-size: 10px; color: #64748b;">Evidencias de los 9 CSVs</span>
+          <span>📌 Diagnóstico: Cuello de Botella Operativo y Multicanal</span>
+          <span style="color: #64748b; font-size: 9.5px;">Evidencias Empíricas</span>
         </div>
-        <p style="font-size: 11px; color: #334155; line-height: 1.45; margin-bottom: 10px;">
-          Carsystem atiende a talleres mecánicos (B2B) y clientes particulares (B2C). Los clientes necesitan reparar vehículos con urgencia y <strong>no están dispuestos a esperar horas por un precio</strong>.
+        <p style="font-size: 11px; color: #334155; line-height: 1.45; margin-bottom: 8px;">
+          Carsystem atiende a talleres mecánicos y conductores particulares. Ambos segmentos necesitan agilidad crítica para no tener vehículos varados:
         </p>
-        <ul style="font-size: 10.5px; color: #475569; line-height: 1.5; padding-left: 14px;">
-          <li><strong>Dispersión Multicanal:</strong> 204 solicitudes repartidas en WhatsApp, llamadas e Instagram sin consola unificada.</li>
-          <li><strong>Inconsistencia de Inventario:</strong> Faltantes de stock entre el sistema y la bodega física en 10 de 12 repuestos.</li>
-          <li><strong>Riesgo Regulatorio:</strong> 33.3% de la base de clientes sin autorización de tratamiento de datos personales (Ley 1581).</li>
-        </ul>
+        <div style="font-size: 10.5px; color: #475569; line-height: 1.5; display: flex; flex-direction: column; gap: 6px;">
+          <div>• <strong>Demora en Cotizaciones:</strong> El cliente promedio espera casi 9 horas por un precio, lo que empuja a más de la mitad a comprarle a la competencia.</div>
+          <div>• <strong>Descuadre de Bodega:</strong> El sistema promete stock que no existe físicamente (faltantes en 10 de 12 repuestos).</div>
+          <div>• <strong>Riesgo Regulatorio:</strong> 33.3% de los clientes no tienen autorización de tratamiento de datos personales (Ley 1581 Habeas Data).</div>
+        </div>
       </div>
 
-      <!-- Arquitectura de la Solución -->
-      <div class="card" style="background: #0f172a; color: white;">
+      <!-- Columna 2 -->
+      <div class="card" style="background: #0f172a; color: white; border-color: #1e293b;">
         <div class="card-title" style="color: white; border-bottom-color: #334155;">
           <span>🚀 La Solución: Ecosistema AutoConexión 360°</span>
-          <span class="badge badge-cyan">4 Pilares</span>
+          <span class="badge badge-cyan">4 Componentes</span>
         </div>
-        <div style="font-size: 10.5px; line-height: 1.5; display: flex; flex-direction: column; gap: 8px;">
-          <div><strong style="color: #38bdf8;">1. Catálogo Web por Vehículo:</strong> Búsqueda técnica por modelo/marca con stock real en tiempo real.</div>
-          <div><strong style="color: #38bdf8;">2. Agente IA WhatsApp 24/7:</strong> Cotizador conversacional con visión de foto/cámara que entrega cotizaciones en &lt; 2 min.</div>
-          <div><strong style="color: #38bdf8;">3. WMS y Saneamiento de Bodega:</strong> Control de conteo cíclico y pistoleo con código de barras para eliminar ventas fantasma.</div>
-          <div><strong style="color: #38bdf8;">4. Tablero BI y Analítica:</strong> Monitoreo en vivo de conversión, tiempos de respuesta y rotación de inventario.</div>
+        <div style="font-size: 10.5px; line-height: 1.5; display: flex; flex-direction: column; gap: 7px; color: #cbd5e1;">
+          <div><strong style="color: #38bdf8;">1. Catálogo Web por Vehículo:</strong> Búsqueda por modelo y compatibilidad OEM con semáforos de stock físico real.</div>
+          <div><strong style="color: #38bdf8;">2. Agente IA WhatsApp 24/7 (AutoBot 360°):</strong> Cotizador conversacional con visión de cámara que emite cotizaciones formales en &lt; 2 min.</div>
+          <div><strong style="color: #38bdf8;">3. Saneamiento WMS y Pistoleo:</strong> Conteo cíclico con etiquetas de código de barras para erradicar las ventas fantasma.</div>
+          <div><strong style="color: #38bdf8;">4. Inteligencia de Negocios (BI):</strong> Tableros analíticos en vivo con indicadores de conversión y reposición.</div>
         </div>
       </div>
     </div>
 
     <div class="slide-footer">
-      <span>Carsystem 360° · Presentación Ejecutiva de Solución Interdisciplinar</span>
-      <span>Expediente de Datos: 9 Bases CSV Oficiales</span>
+      <span>AutoConexión Carsystem 360° · Presentación Ejecutiva</span>
+      <span>Expediente de Datos: 9 Archivos CSV Analizados</span>
     </div>
   </div>
 
 
-  <!-- SLIDE 2: DIAGNÓSTICO EN GRÁFICOS (EMBUDO Y PÉRDIDA) -->
-  <div class="slide">
+  <!-- ==========================================
+       SLIDE 2: DIAGNÓSTICO COMERCIAL EN GRÁFICOS
+       ========================================== -->
+  <div class="slide-page">
     <div class="slide-header">
-      <div class="slide-title-area">
-        <span class="badge" style="margin-bottom: 4px; display: inline-block;">DIAGNÓSTICO COMERCIAL</span>
-        <h2>¿Por qué se pierden las cotizaciones en Carsystem?</h2>
-        <p>Análisis del Embudo de Ventas, Causas de Abandono y Brecha de Tiempos de Respuesta</p>
+      <div>
+        <span class="badge">DIAGNÓSTICO DE COTIZACIONES</span>
+        <h2 style="margin-top: 2px;">¿Por qué pierde ventas Carsystem? Análisis del Embudo y Tiempos</h2>
+        <p>Métricas reales extraídas de cotizaciones.csv (96 registros) e interacciones.csv (204 registros)</p>
       </div>
       <span class="badge">DIAPOSITIVA 2 / 4</span>
     </div>
 
     <div class="grid-3">
-      
-      <!-- GRÁFICO 1: EMBUDO DE CONVERSIÓN -->
+
+      <!-- GRÁFICO 1: EMBUDO -->
       <div class="card">
         <div class="card-title">
-          <span>1. Fuga en el Embudo (Funnel)</span>
-          <span style="color: #e11d48; font-size: 10px;">Fuga: 78.5%</span>
+          <span>1. Embudo Comercial (Funnel)</span>
+          <span style="color: #e11d48; font-size: 9.5px; font-weight: bold;">Fuga: 78.5%</span>
         </div>
-        <p style="font-size: 9.5px; color: #64748b; margin-bottom: 10px;">De 204 contactos entrantes, solo 44 terminan en venta cerrada:</p>
-        
-        <div class="bar-row">
-          <div class="bar-label">Interacciones</div>
-          <div class="bar-track"><div class="bar-fill" style="width: 100%; background: #0284c7;">204</div></div>
-          <div class="bar-val">100%</div>
-        </div>
-        <div class="bar-row">
-          <div class="bar-label">Cotizaciones Reg.</div>
-          <div class="bar-track"><div class="bar-fill" style="width: 47%; background: #0ea5e9;">96</div></div>
-          <div class="bar-val">47.1%</div>
-        </div>
-        <div class="bar-row">
-          <div class="bar-label">Ventas Cerradas</div>
-          <div class="bar-track"><div class="bar-fill" style="width: 21.5%; background: #10b981;">44</div></div>
-          <div class="bar-val">21.5%</div>
+        <p style="font-size: 9.5px; color: #64748b; margin-bottom: 8px;">De 204 contactos entrantes, solo 44 terminan en venta cerrada:</p>
+
+        <div class="chart-item">
+          <div class="chart-label-row">
+            <span>Interacciones Entrantes</span>
+            <span>204 (100%)</span>
+          </div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width: 100%; background: #0284c7;">204</div>
+          </div>
         </div>
 
-        <div style="margin-top: 10px; font-size: 9.5px; background: #fff1f2; padding: 6px; border-radius: 4px; color: #be123c;">
-          <strong>Punto Crítico:</strong> 108 clientes se pierden antes de cotizar formalmente por falta de registro y derivaciones informales.
+        <div class="chart-item">
+          <div class="chart-label-row">
+            <span>Cotizaciones Registradas</span>
+            <span>96 (47.1%)</span>
+          </div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width: 47%; background: #0ea5e9;">96</div>
+          </div>
+        </div>
+
+        <div class="chart-item">
+          <div class="chart-label-row">
+            <span>Ventas Facturadas</span>
+            <span>44 (21.5%)</span>
+          </div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width: 21.5%; background: #10b981;">44</div>
+          </div>
+        </div>
+
+        <div style="background: #fff1f2; border: 1px solid #fecdd3; border-radius: 6px; padding: 6px 8px; font-size: 9px; color: #9f1239; margin-top: 8px;">
+          <strong>Fuga Crítica:</strong> 108 prospectos calificados se pierden en derivaciones manuales a WhatsApp o atención informal sin registro.
         </div>
       </div>
 
@@ -306,65 +331,105 @@
       <div class="card">
         <div class="card-title">
           <span>2. Motivos de Pérdida (52 Casos)</span>
-          <span style="font-size: 10px; color: #64748b;">cotizaciones.csv</span>
+          <span style="color: #64748b; font-size: 9.5px;">54.2% del Total</span>
         </div>
-        <div style="margin-top: 4px;">
-          <div class="bar-row">
-            <div class="bar-label">Precio</div>
-            <div class="bar-track"><div class="bar-fill" style="width: 75%; background: #f43f5e;">13</div></div>
-            <div class="bar-val">25.0%</div>
+        <p style="font-size: 9.5px; color: #64748b; margin-bottom: 8px;">¿Por qué los clientes descartan a Carsystem?</p>
+
+        <div class="chart-item">
+          <div class="chart-label-row">
+            <span>Precio elevado</span>
+            <span>13 casos (25.0%)</span>
           </div>
-          <div class="bar-row">
-            <div class="bar-label">Compró Competidor</div>
-            <div class="bar-track"><div class="bar-fill" style="width: 58%; background: #fb7185;">10</div></div>
-            <div class="bar-val">19.2%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Respuesta Tardía</div>
-            <div class="bar-track"><div class="bar-fill" style="width: 58%; background: #fda4af; color: #881337;">10</div></div>
-            <div class="bar-val">19.2%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Sin Seguimiento</div>
-            <div class="bar-track"><div class="bar-fill" style="width: 40%; background: #cbd5e1; color: #334155;">7</div></div>
-            <div class="bar-val">13.5%</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Sin Stock en Bodega</div>
-            <div class="bar-track"><div class="bar-fill" style="width: 40%; background: #cbd5e1; color: #334155;">7</div></div>
-            <div class="bar-val">13.5%</div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width: 75%; background: #f43f5e;">13</div>
           </div>
         </div>
-        <div style="margin-top: 6px; font-size: 9.5px; background: #f8fafc; padding: 6px; border-radius: 4px; color: #334155;">
-          <strong>Conclusión:</strong> El <strong>51.9%</strong> de las pérdidas se debe a lentitud, falta de seguimiento o falta de stock (problemas 100% operativos).
+
+        <div class="chart-item">
+          <div class="chart-label-row">
+            <span>Compró a competidor</span>
+            <span>10 casos (19.2%)</span>
+          </div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width: 58%; background: #fb7185;">10</div>
+          </div>
+        </div>
+
+        <div class="chart-item">
+          <div class="chart-label-row">
+            <span>Respuesta tardía</span>
+            <span>10 casos (19.2%)</span>
+          </div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width: 58%; background: #f43f5e;">10</div>
+          </div>
+        </div>
+
+        <div class="chart-item">
+          <div class="chart-label-row">
+            <span>Sin seguimiento del asesor</span>
+            <span>7 casos (13.5%)</span>
+          </div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width: 40%; background: #94a3b8;">7</div>
+          </div>
+        </div>
+
+        <div class="chart-item">
+          <div class="chart-label-row">
+            <span>Sin stock disponible</span>
+            <span>7 casos (13.5%)</span>
+          </div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width: 40%; background: #94a3b8;">7</div>
+          </div>
+        </div>
+
+        <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 6px 8px; font-size: 9px; color: #334155; margin-top: 4px;">
+          <strong>Conclusión:</strong> El <strong>51.9%</strong> de las pérdidas se debe a lentitud, falta de stock o falta de seguimiento comercial.
         </div>
       </div>
 
       <!-- GRÁFICO 3: BRECHA DE TIEMPOS -->
       <div class="card">
         <div class="card-title">
-          <span>3. Brecha de Tiempos (Horas)</span>
-          <span style="font-size: 10px; color: #64748b;">Impacto en Cierre</span>
+          <span>3. Demoras de Atención (Horas)</span>
+          <span style="color: #64748b; font-size: 9.5px;">Impacto Directo</span>
         </div>
-        <div style="margin-top: 6px;">
-          <div class="bar-row">
-            <div class="bar-label">Cotización Ganada</div>
-            <div class="bar-track"><div class="bar-fill" style="width: 32%; background: #10b981;">4.0 h</div></div>
-            <div class="bar-val">Gana</div>
+        <p style="font-size: 9.5px; color: #64748b; margin-bottom: 8px;">Comparativa del tiempo promedio de cotización:</p>
+
+        <div class="chart-item">
+          <div class="chart-label-row">
+            <span style="color: #059669;">Cotizaciones Ganadas</span>
+            <span style="color: #059669;">4.0 horas</span>
           </div>
-          <div class="bar-row">
-            <div class="bar-label">Cotización Perdida</div>
-            <div class="bar-track"><div class="bar-fill" style="width: 70%; background: #e11d48;">8.8 h</div></div>
-            <div class="bar-val">Pierde</div>
-          </div>
-          <div class="bar-row">
-            <div class="bar-label">Asesor E04 (42% carga)</div>
-            <div class="bar-track"><div class="bar-fill" style="width: 100%; background: #881337;">12.6 h</div></div>
-            <div class="bar-val">Crítico</div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width: 32%; background: #10b981;">4.0 h</div>
           </div>
         </div>
-        <div style="margin-top: 14px; padding: 8px; background: #ecfdf5; border-radius: 4px; font-size: 9.5px; color: #065f46;">
-          <strong>Meta Carsystem 360°:</strong> Reducir el tiempo a <strong>&lt; 0.05 h (2 minutos)</strong> mediante el Asistente IA, blindando la venta inmediata.
+
+        <div class="chart-item">
+          <div class="chart-label-row">
+            <span style="color: #e11d48;">Cotizaciones Perdidas</span>
+            <span style="color: #e11d48;">8.8 horas</span>
+          </div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width: 70%; background: #e11d48;">8.8 h</div>
+          </div>
+        </div>
+
+        <div class="chart-item">
+          <div class="chart-label-row">
+            <span style="color: #881337;">Asesor E04 (42% de solicitudes)</span>
+            <span style="color: #881337;">12.6 horas</span>
+          </div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width: 100%; background: #881337;">12.6 h</div>
+          </div>
+        </div>
+
+        <div style="background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 6px; padding: 8px; font-size: 9.5px; color: #065f46; margin-top: 10px;">
+          <strong>Meta Carsystem 360°:</strong> Reducir el tiempo a <strong>&lt; 0.05 h (2 minutos)</strong> con AutoBot 360°, cerrando la venta antes de que el cliente busque alternativas.
         </div>
       </div>
 
@@ -377,126 +442,176 @@
   </div>
 
 
-  <!-- SLIDE 3: OPERACIONES, BODEGA Y CASO SU-301 -->
-  <div class="slide">
+  <!-- ==========================================
+       SLIDE 3: OPERACIONES, BODEGA Y CASO SU-301
+       ========================================== -->
+  <div class="slide-page">
     <div class="slide-header">
-      <div class="slide-title-area">
-        <span class="badge" style="margin-bottom: 4px; display: inline-block;">OPERACIONES & INVENTARIO</span>
-        <h2>Descuadres en Bodega Física y el Caso del Repuesto SU-301</h2>
-        <p>Inconsistencias entre el Sistema y la Realidad de Estantería</p>
+      <div>
+        <span class="badge">AUDITORÍA OPERATIVA & BODEGA</span>
+        <h2 style="margin-top: 2px;">Inconsistencias de Inventario y el Caso Revelador del Repuesto SU-301</h2>
+        <p>Cruce de datos entre inventario.csv (12 SKUs) y ventas.csv (44 transacciones)</p>
       </div>
       <span class="badge">DIAPOSITIVA 3 / 4</span>
     </div>
 
     <div class="grid-2">
-      <!-- GRÁFICO 4: DESFASES EN BODEGA -->
+
+      <!-- COLUMNA 1: DESCUADRES DE BODEGA -->
       <div class="card">
         <div class="card-title">
-          <span>📦 Descuadres Críticos de Inventario (Físico vs Registrado)</span>
-          <span style="color: #e11d48; font-size: 10px;">Faltantes en 10 de 12 SKUs</span>
+          <span>📦 Descuadres Físicos vs. Registrados (Faltantes)</span>
+          <span style="color: #e11d48; font-size: 9.5px; font-weight: bold;">Desfase en 10 de 12 SKUs</span>
         </div>
-        <p style="font-size: 9.5px; color: #64748b; margin-bottom: 8px;">Comparativa del stock en sistema contra el conteo físico real:</p>
+        <p style="font-size: 9.5px; color: #64748b; margin-bottom: 8px;">Diferencia entre lo que dice el software y lo que existe en bodega:</p>
 
-        <div class="bar-row">
-          <div class="bar-label">Filtro Aceite MO-201</div>
-          <div class="bar-track"><div class="bar-fill" style="width: 100%; background: #e11d48;">-47 unds</div></div>
-          <div class="bar-val">Sistema: 65 / Real: 18</div>
-        </div>
-        <div class="bar-row">
-          <div class="bar-label">Filtro Aire FI-601</div>
-          <div class="bar-track"><div class="bar-fill" style="width: 64%; background: #f43f5e;">-30 unds</div></div>
-          <div class="bar-val">Sistema: 45 / Real: 15</div>
-        </div>
-        <div class="bar-row">
-          <div class="bar-label">Termostato RE-502</div>
-          <div class="bar-track"><div class="bar-fill" style="width: 47%; background: #fb7185;">-22 unds</div></div>
-          <div class="bar-val">Sistema: 34 / Real: 12</div>
-        </div>
-        <div class="bar-row">
-          <div class="bar-label">Filtro Combustible FI-602</div>
-          <div class="bar-track"><div class="bar-fill" style="width: 36%; background: #fda4af; color: #881337;">-17 unds</div></div>
-          <div class="bar-val">Sistema: 31 / Real: 14</div>
-        </div>
-        <div class="bar-row">
-          <div class="bar-label">Pastillas Freno FR-101</div>
-          <div class="bar-track"><div class="bar-fill" style="width: 34%; background: #fda4af; color: #881337;">-16 unds</div></div>
-          <div class="bar-val">Sistema: 28 / Real: 12</div>
-        </div>
-
-        <div style="margin-top: 8px; font-size: 9.5px; color: #475569; background: #f8fafc; padding: 6px; border-radius: 4px;">
-          <strong>Impacto:</strong> Se prometían productos inexistentes o se negaban pedidos reales por falta de trazabilidad.
-        </div>
-      </div>
-
-      <!-- CASO SU-301 Y PARETO -->
-      <div class="card">
-        <div class="card-title">
-          <span>🔍 Caso Revelador: El Repuesto con $0 Ventas (SU-301)</span>
-          <span class="badge" style="background: #e11d48;">6 de 6 Perdidas</span>
-        </div>
-        <div style="background: #fff1f2; border: 1px solid #fecdd3; border-radius: 6px; padding: 8px; margin-bottom: 8px;">
-          <div style="font-size: 11px; font-weight: 800; color: #9f1239;">Amortiguador Delantero (SU-301)</div>
-          <div style="font-size: 9.5px; color: #881337; margin-top: 2px;">
-            • Margen de ganancia: <strong>37.1%</strong> · Stock disponible en bodega: <strong>11 unidades</strong><br>
-            • Cotizaciones recibidas: <strong>6</strong> · Cotizaciones Ganadas: <strong>0 (100% de pérdida)</strong><br>
-            • Total ventas facturadas en el período: <strong>$0 COP</strong>
+        <div class="chart-item">
+          <div class="chart-label-row">
+            <span>Filtro Aceite (MO-201) · Estante B-04</span>
+            <span style="color: #e11d48;">-47 unds (Sistema: 65 / Real: 18)</span>
+          </div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width: 100%; background: #e11d48;">-47</div>
           </div>
         </div>
 
-        <div class="card-title" style="margin-top: 4px;">
-          <span>💰 Concentración de Facturación ($27.5M COP)</span>
+        <div class="chart-item">
+          <div class="chart-label-row">
+            <span>Filtro Aire (FI-601) · Estante B-10</span>
+            <span style="color: #e11d48;">-30 unds (Sistema: 45 / Real: 15)</span>
+          </div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width: 64%; background: #f43f5e;">-30</div>
+          </div>
         </div>
-        <p style="font-size: 9.5px; color: #64748b; margin-bottom: 6px;">El 77.3% de los ingresos depende exclusivamente de 3 piezas:</p>
-        <div class="bar-row">
-          <div class="bar-label">Kit Distribución (MO-202)</div>
-          <div class="bar-track"><div class="bar-fill" style="width: 100%; background: #0f172a;">$8.8M</div></div>
-          <div class="bar-val">32.1%</div>
+
+        <div class="chart-item">
+          <div class="chart-label-row">
+            <span>Termostato (RE-502) · Estante E-03</span>
+            <span style="color: #e11d48;">-22 unds (Sistema: 34 / Real: 12)</span>
+          </div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width: 47%; background: #fb7185;">-22</div>
+          </div>
         </div>
-        <div class="bar-row">
-          <div class="bar-label">Batería 60Ah (EL-401)</div>
-          <div class="bar-track"><div class="bar-fill" style="width: 87%; background: #0284c7;">$7.7M</div></div>
-          <div class="bar-val">28.0%</div>
+
+        <div class="chart-item">
+          <div class="chart-label-row">
+            <span>Filtro Combustible (FI-602) · Estante B-12</span>
+            <span style="color: #e11d48;">-17 unds (Sistema: 31 / Real: 14)</span>
+          </div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width: 36%; background: #fda4af; color: #881337;">-17</div>
+          </div>
         </div>
-        <div class="bar-row">
-          <div class="bar-label">Radiador (RE-501)</div>
-          <div class="bar-track"><div class="bar-fill" style="width: 54%; background: #0ea5e9;">$4.7M</div></div>
-          <div class="bar-val">17.2%</div>
+
+        <div class="chart-item">
+          <div class="chart-label-row">
+            <span>Pastillas Freno (FR-101) · Estante A-12</span>
+            <span style="color: #e11d48;">-16 unds (Sistema: 28 / Real: 12)</span>
+          </div>
+          <div class="chart-bar-bg">
+            <div class="chart-bar-fill" style="width: 34%; background: #fda4af; color: #881337;">-16</div>
+          </div>
+        </div>
+
+        <div style="background: #fff1f2; border: 1px solid #fecdd3; border-radius: 6px; padding: 6px 8px; font-size: 9px; color: #9f1239; margin-top: 4px;">
+          <strong>Causa Raíz de Fricción:</strong> Los comerciales cotizaban "a ciegas" prometiendo repuestos inexistentes o rechazando clientes teniendo piezas físicas.
         </div>
       </div>
+
+      <!-- COLUMNA 2: CASO SU-301 Y PARETO -->
+      <div class="card">
+        <div>
+          <div class="card-title">
+            <span>🔍 El Caso Revelador: Amortiguador SU-301</span>
+            <span class="badge" style="background: #e11d48;">100% de Pérdida</span>
+          </div>
+          <div style="background: #fff1f2; border: 1px solid #fecdd3; border-radius: 6px; padding: 8px 10px; margin-bottom: 10px;">
+            <div style="font-size: 11px; font-weight: 800; color: #9f1239;">Amortiguador Delantero (SU-301)</div>
+            <div style="font-size: 9.5px; color: #881337; margin-top: 3px; line-height: 1.4;">
+              • Margen comercial: <strong>37.1%</strong> · Stock físico disponible: <strong>11 unidades</strong><br>
+              • Cotizaciones recibidas: <strong>6</strong> · Cotizaciones Ganadas: <strong>0 (6 de 6 perdidas)</strong><br>
+              • <strong>Facturación total: $0 COP</strong> por lentitud (3 tardías, 1 sin seguimiento, 1 compra a competidor).
+            </div>
+          </div>
+
+          <div class="card-title">
+            <span>💰 Concentración de Facturación ($27.5M COP)</span>
+            <span style="color: #64748b; font-size: 9.5px;">Pareto 77.3%</span>
+          </div>
+          <p style="font-size: 9px; color: #64748b; margin-bottom: 6px;">Más de 3/4 de las ventas dependen de solo 3 repuestos:</p>
+
+          <div class="chart-item">
+            <div class="chart-label-row">
+              <span>Kit Distribución (MO-202)</span>
+              <span>$8.8M (32.1%)</span>
+            </div>
+            <div class="chart-bar-bg">
+              <div class="chart-bar-fill" style="width: 100%; background: #0f172a;">$8.820.000</div>
+            </div>
+          </div>
+
+          <div class="chart-item">
+            <div class="chart-label-row">
+              <span>Batería 12V 60Ah (EL-401)</span>
+              <span>$7.7M (28.0%)</span>
+            </div>
+            <div class="chart-bar-bg">
+              <div class="chart-bar-fill" style="width: 87%; background: #0284c7;">$7.700.000</div>
+            </div>
+          </div>
+
+          <div class="chart-item">
+            <div class="chart-label-row">
+              <span>Radiador (RE-501)</span>
+              <span>$4.7M (17.2%)</span>
+            </div>
+            <div class="chart-bar-bg">
+              <div class="chart-bar-fill" style="width: 54%; background: #0ea5e9;">$4.750.000</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <div class="slide-footer">
       <span>Carsystem 360° · Auditoría Operativa de Bodega</span>
-      <span>Fuente: inventario.csv y ventas.csv</span>
+      <span>Fuente: inventario.csv, cotizaciones.csv y ventas.csv</span>
     </div>
   </div>
 
 
-  <!-- SLIDE 4: SOLUCIÓN Y RESULTADOS ESPERADOS -->
-  <div class="slide">
+  <!-- ==========================================
+       SLIDE 4: SOLUCIÓN Y RESULTADOS ESPERADOS
+       ========================================== -->
+  <div class="slide-page">
     <div class="slide-header">
-      <div class="slide-title-area">
-        <span class="badge badge-cyan" style="margin-bottom: 4px; display: inline-block;">TRANSFORMACIÓN DIGITAL</span>
-        <h2>Impacto Proyectado y Plan de Implementación Carsystem 360°</h2>
-        <p>De un Mostrador Tradicional Lento a un Ecosistema Omnicanal Automatizado</p>
+      <div>
+        <span class="badge badge-cyan">PROPUESTA DE VALOR & IMPACTO</span>
+        <h2 style="margin-top: 2px;">Transformación Digital con Carsystem 360° · Impacto y Hoja de Ruta</h2>
+        <p>Ecosistema Omnicanal Integrado: Automatización con IA, WMS en Tiempo Real y Cumplimiento Normativo</p>
       </div>
       <span class="badge">DIAPOSITIVA 4 / 4</span>
     </div>
 
     <div class="grid-2">
-      <!-- COMPARATIVA ANTES VS DESPUÉS -->
+
+      <!-- COLUMNA 1: TABLA Y GRÁFICOS DE IMPACTO -->
       <div class="card">
         <div class="card-title">
-          <span>📊 Comparativa Directa de Impacto</span>
-          <span style="color: #059669; font-size: 10px;">Línea Base vs Meta</span>
+          <span>📊 Comparativa de Impacto Directo (Línea Base vs. Meta)</span>
+          <span style="color: #059669; font-size: 9.5px; font-weight: bold;">Resultados Medibles</span>
         </div>
-        <table class="table-clean">
+
+        <table class="table-custom" style="margin-bottom: 12px;">
           <thead>
             <tr>
-              <th>Indicador de Éxito</th>
+              <th>Indicador Clave</th>
               <th>Operación Actual</th>
               <th>Con Carsystem 360°</th>
-              <th>Mejora</th>
+              <th>Impacto</th>
             </tr>
           </thead>
           <tbody>
@@ -504,61 +619,96 @@
               <td><strong>Tiempo de Cotización</strong></td>
               <td style="color: #e11d48; font-weight: bold;">8.8 horas</td>
               <td style="color: #059669; font-weight: bold;">&lt; 2 minutos</td>
-              <td><strong>99.6% más rápido</strong></td>
+              <td><span style="background: #ecfdf5; color: #065f46; padding: 1px 6px; border-radius: 4px; font-weight: bold;">-99.6%</span></td>
             </tr>
             <tr>
               <td><strong>Tasa de Conversión</strong></td>
               <td style="color: #e11d48; font-weight: bold;">45.8% (54% pérdida)</td>
               <td style="color: #059669; font-weight: bold;">&gt; 70.0%</td>
-              <td><strong>+24.2 puntos</strong></td>
+              <td><span style="background: #ecfdf5; color: #065f46; padding: 1px 6px; border-radius: 4px; font-weight: bold;">+24.2 pts</span></td>
             </tr>
             <tr>
-              <td><strong>Exactitud de Bodega (WMS)</strong></td>
-              <td style="color: #e11d48; font-weight: bold;">Desfase de -47 u.</td>
+              <td><strong>Exactitud de Bodega</strong></td>
+              <td style="color: #e11d48; font-weight: bold;">Desfase -47 u.</td>
               <td style="color: #059669; font-weight: bold;">&gt; 98% exacto</td>
-              <td><strong>Elimina venta fantasma</strong></td>
+              <td><span style="background: #ecfdf5; color: #065f46; padding: 1px 6px; border-radius: 4px; font-weight: bold;">Sin quiebres</span></td>
             </tr>
             <tr>
               <td><strong>Resolución de PQRs</strong></td>
               <td style="color: #e11d48; font-weight: bold;">Hasta 6 días</td>
               <td style="color: #059669; font-weight: bold;">&lt; 24 horas</td>
-              <td><strong>Fideliza talleres</strong></td>
+              <td><span style="background: #ecfdf5; color: #065f46; padding: 1px 6px; border-radius: 4px; font-weight: bold;">Fidelización</span></td>
             </tr>
             <tr>
-              <td><strong>Cumplimiento Habeas Data</strong></td>
+              <td><strong>Cumplimiento Datos</strong></td>
               <td style="color: #e11d48; font-weight: bold;">66.7% autorizado</td>
               <td style="color: #059669; font-weight: bold;">100% verificado</td>
-              <td><strong>Blindaje legal SIC</strong></td>
+              <td><span style="background: #ecfdf5; color: #065f46; padding: 1px 6px; border-radius: 4px; font-weight: bold;">Blindaje SIC</span></td>
             </tr>
           </tbody>
         </table>
+
+        <!-- Gráfico Visual de Conversión -->
+        <div>
+          <span style="font-size: 10px; font-weight: 800; color: #334155; display: block; margin-bottom: 4px;">Comparativa Visual de Conversión Comercial:</span>
+          <div class="chart-item">
+            <div class="chart-label-row">
+              <span>Actual (Tradicional)</span>
+              <span style="color: #e11d48;">45.8%</span>
+            </div>
+            <div class="chart-bar-bg">
+              <div class="chart-bar-fill" style="width: 45.8%; background: #e11d48;">45.8%</div>
+            </div>
+          </div>
+          <div class="chart-item">
+            <div class="chart-label-row">
+              <span>Meta con Carsystem 360°</span>
+              <span style="color: #059669;">75.0%</span>
+            </div>
+            <div class="chart-bar-bg">
+              <div class="chart-bar-fill" style="width: 75.0%; background: #10b981;">75.0% (+29.2%)</div>
+            </div>
+          </div>
+        </div>
       </div>
 
-      <!-- CRONOGRAMA 12 SEMANAS -->
+      <!-- COLUMNA 2: CRONOGRAMA Y GESTIÓN DE RIESGOS -->
       <div class="card">
-        <div class="card-title">
-          <span>📅 Plan de Trabajo (12 Semanas en 3 Fases)</span>
-          <span class="badge">Hoja de Ruta</span>
-        </div>
-        <div style="font-size: 10px; display: flex; flex-direction: column; gap: 8px; margin-top: 4px;">
-          <div style="border-left: 3px solid #0f172a; padding-left: 8px;">
-            <strong style="color: #0f172a;">Fase 1: Saneamiento y Base Legal (Semanas 1-3)</strong><br>
-            <span style="color: #64748b;">Conteo cíclico con etiquetas de código de barras para eliminar el descuadre de inventario y módulo de consentimiento Habeas Data.</span>
+        <div>
+          <div class="card-title">
+            <span>📅 Ruta de Implementación (12 Semanas)</span>
+            <span class="badge">Hoja de Ruta</span>
           </div>
-          <div style="border-left: 3px solid #06b6d4; padding-left: 8px;">
-            <strong style="color: #0891b2;">Fase 2: Catálogo Web y Omnicanalidad (Semanas 4-8)</strong><br>
-            <span style="color: #64748b;">Lanzamiento del portal de e-commerce con filtrado por placa/modelo y unificación de WhatsApp Business API en CRM central.</span>
+
+          <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 12px;">
+            <div style="border-left: 3px solid #0f172a; padding-left: 8px;">
+              <strong style="font-size: 10.5px; color: #0f172a;">Fase 1: Saneamiento y Base Legal (Semanas 1-3)</strong>
+              <p style="font-size: 9.5px; color: #64748b; margin-top: 1px;">Conteo físico cíclico con etiquetas de código de barras para eliminar el descuadre de inventario y módulo de consentimiento Habeas Data (Ley 1581).</p>
+            </div>
+            <div style="border-left: 3px solid #06b6d4; padding-left: 8px;">
+              <strong style="font-size: 10.5px; color: #0891b2;">Fase 2: Catálogo Web y Omnicanalidad (Semanas 4-8)</strong>
+              <p style="font-size: 9.5px; color: #64748b; margin-top: 1px;">Lanzamiento del portal de repuestos por placa/modelo y centralización de WhatsApp Business API en consola unificada.</p>
+            </div>
+            <div style="border-left: 3px solid #10b981; padding-left: 8px;">
+              <strong style="font-size: 10.5px; color: #059669;">Fase 3: IA y Automatización Total (Semanas 9-12)</strong>
+              <p style="font-size: 9.5px; color: #64748b; margin-top: 1px;">Activación del bot de cotización instantánea 24/7 con visión por computadora y despliegue del tablero analítico gerencial.</p>
+            </div>
           </div>
-          <div style="border-left: 3px solid #10b981; padding-left: 8px;">
-            <strong style="color: #059669;">Fase 3: IA y Automatización Total (Semanas 9-12)</strong><br>
-            <span style="color: #64748b;">Despliegue del bot de cotización instantánea 24/7 y tableros analíticos gerenciales de toma de decisiones.</span>
+
+          <div class="card-title">
+            <span>⚠️ Mitigación Estratégica de Riesgos</span>
+          </div>
+          <div style="font-size: 9.5px; color: #334155; line-height: 1.4; display: flex; flex-direction: column; gap: 4px;">
+            <div>• <strong>Resistencia Operativa:</strong> Capacitación mostrando comisiones más rápidas con menos digitación manual.</div>
+            <div>• <strong>Falla en IA:</strong> Escalamiento automático al asesor con ficha prellenada en casos complejos.</div>
           </div>
         </div>
       </div>
+
     </div>
 
     <div class="slide-footer">
-      <span>Carsystem 360° · Propuesta Interdisciplinar para el Comité Evaluador</span>
+      <span>AutoConexión Carsystem 360° · Propuesta Interdisciplinar para el Comité Evaluador</span>
       <span>Alcaldía de Medellín · Sapiencia · Esumer</span>
     </div>
   </div>
